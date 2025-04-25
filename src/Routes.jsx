@@ -9,9 +9,12 @@ const AppRoutes = () => {
     <Routes>
       <Route element={<App />}></Route>
       <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/auth/login" element={<Login />} />
-      <Route path="/auth/register" element={<Register />} />
+      <Route path="/About" element={<About />} />
+      {/* Need to add one route for specific venue and one for all venues (With filters) */}
+      <Route path="/Venue" element={<Venue />} /> 
+      <Route path="/Booking" element={<Booking />} />
+      <Route path="/Login" element={<Login />} />
+      <Route path="/Register" element={<Register />} />
     </Routes>
   );
 };
