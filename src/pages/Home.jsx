@@ -4,7 +4,7 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 const BEARER_TOKEN = import.meta.env.VITE_BEARER_TOKEN;
 
-export default function Home() {
+function Home() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,7 +25,6 @@ export default function Home() {
         }
 
         const data = await response.json();
-        console.log(data);
         setBookings(data.data);
       } catch (err) {
         setError(err.message);
@@ -37,6 +36,11 @@ export default function Home() {
     fetchBookings();
   }, []);
 
+  function truncateText(text, maxLength) {
+    if (!text) return "";
+    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  }
+
   if (loading) return <p>Loading bookings...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -47,14 +51,9 @@ export default function Home() {
           key={booking.id}
           className="bg-white shadow-lg rounded-xl p-4 border border-gray-200"
         >
-          <h2 className="text-lg font-semibold mb-2">
-            {booking.venue.name}
-          </h2>
+          <h2 className="text-lg font-semibold mb-2">{booking.venue.name}</h2>
           <img
-            src={
-              booking.venue?.media?.[0]?.url ||
-              "https://via.placeholder.com/300"
-            }
+            src={booking.venue?.media?.[0]?.url || "./public/No-Image-Placeholder.svg"}
             alt={booking.venue?.media?.[0]?.alt || "Venue image"}
             className="w-full h-48 object-cover rounded-lg mb-2"
           />
@@ -67,6 +66,9 @@ export default function Home() {
           <p>
             <strong>Guests:</strong> {booking.guests}
           </p>
+          <p className="text-m text-blue-600">
+            {truncateText(booking.venue.description, 20)}
+          </p>
           <p className="text-sm text-gray-500 mt-2">
             Created: {booking.created}
           </p>
@@ -76,3 +78,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home;
