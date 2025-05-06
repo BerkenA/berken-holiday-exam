@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -49,30 +50,56 @@ function Home() {
       {bookings.map((booking) => (
         <div
           key={booking.id}
-          className="bg-white shadow-lg rounded-xl p-4 border border-gray-200"
+          className="bg-white shadow-xl rounded-xl p-4 border border-gray-200"
         >
           <h2 className="text-lg font-semibold mb-2">{booking.venue.name}</h2>
           <img
-            src={booking.venue?.media?.[0]?.url || "./public/No-Image-Placeholder.svg"}
+            src={
+              booking.venue?.media?.[0]?.url ||
+              "./public/No-Image-Placeholder.svg"
+            }
             alt={booking.venue?.media?.[0]?.alt || "Venue image"}
             className="w-full h-48 object-cover rounded-lg mb-2"
           />
           <p>
-            <strong>From:</strong> {booking.dateFrom}
+            <strong>From:</strong>{" "}
+            {new Date(booking.dateFrom).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
           </p>
           <p>
-            <strong>To:</strong> {booking.dateTo}
+            <strong>To:</strong>{" "}
+            {new Date(booking.dateTo).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
           </p>
+
           <p>
             <strong>Guests:</strong> {booking.guests}
           </p>
           <p className="text-m text-blue-600">
-            {truncateText(booking.venue.description, 20)}
+            {truncateText(booking.venue.description, 55)}
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            Created: {booking.created}
+            <strong>Created:</strong>{" "}
+            {new Date(booking.created).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
           </p>
-          <p className="text-sm text-gray-500">Updated: {booking.updated}</p>
+          <p className="text-sm text-gray-500 mt-2">
+            <strong>Updated:</strong>{" "}
+            {new Date(booking.updated).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </p>
         </div>
       ))}
     </div>
