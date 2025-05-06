@@ -1,44 +1,78 @@
 import { useState, useEffect } from "react";
 
-const BASE_URL = "https://v2.api.noroff.dev/holidaze";
+const BASE_URL = import.meta.env.VITE_API_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
+const BEARER_TOKEN = import.meta.env.VITE_BEARER_TOKEN;
 
 export default function Home() {
-  const [venues, setVenues] = useState([]);
+  const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchVenues() {
+    const fetchBookings = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/venues`);
+        const response = await fetch(`${BASE_URL}/bookings?_venue=true`, {
+          headers: {
+            Authorization: `Bearer ${BEARER_TOKEN}`,
+            "Content-Type": "application/json",
+            "X-Noroff-API-Key": API_KEY,
+          },
+        });
+
         if (!response.ok) {
-          throw new Error("Failed to fetch venues");
+          throw new Error("Failed to fetch bookings");
         }
+
         const data = await response.json();
-        setVenues(data.data);
+        console.log(data);
+        setBookings(data.data);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
-    fetchVenues();
+    fetchBookings();
   }, []);
 
-  if (loading) return <p>Loading venues...</p>;
+  if (loading) return <p>Loading bookings...</p>;
   if (error) return <p>Error: {error}</p>;
-  console.log(venues)
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
-      {venues.map((venue) => (
-        <div key={venue.id} className="border rounded p-4 shadow">
-          <h2 className="text-lg font-semibold">{venue.name}</h2>
-          <p>{venue.location?.address || "Address not available"}</p>
+    <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {bookings.map((booking) => (
+        <div
+          key={booking.id}
+          className="bg-white shadow-lg rounded-xl p-4 border border-gray-200"
+        >
+          <h2 className="text-lg font-semibold mb-2">
+            {booking.venue.name}
+          </h2>
+          <img
+            src={
+              booking.venue?.media?.[0]?.url ||
+              "https://via.placeholder.com/300"
+            }
+            alt={booking.venue?.media?.[0]?.alt || "Venue image"}
+            className="w-full h-48 object-cover rounded-lg mb-2"
+          />
+          <p>
+            <strong>From:</strong> {booking.dateFrom}
+          </p>
+          <p>
+            <strong>To:</strong> {booking.dateTo}
+          </p>
+          <p>
+            <strong>Guests:</strong> {booking.guests}
+          </p>
+          <p className="text-sm text-gray-500 mt-2">
+            Created: {booking.created}
+          </p>
+          <p className="text-sm text-gray-500">Updated: {booking.updated}</p>
         </div>
       ))}
     </div>
   );
 }
-

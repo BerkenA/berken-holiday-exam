@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-blue-600 text-2xl font-bold">Holidaze</p>
         <p className="text-m">
-          &copy; {new Date().getFullYear()}All rights reserved.
+          &copy; {new Date().getFullYear()} All rights reserved.
         </p>
         <div className="flex gap-4">
           <a href="/about" className="hover:text-blue-600">

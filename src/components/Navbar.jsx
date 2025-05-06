@@ -15,7 +15,7 @@ export default function Navbar() {
           <Link to="/" className="hover:text-blue-600">
             Home
           </Link>
-          <Link to="/venues" className="hover:text-blue-600">
+          <Link to="/venue" className="hover:text-blue-600">
             Venues
           </Link>
           <Link to="/profile" className="hover:text-blue-600">
@@ -32,7 +32,7 @@ export default function Navbar() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
-          {menuOpen ? "x" : "☰"}
+          {menuOpen ? "X" : "☰"}
         </button>
       </div>
 
