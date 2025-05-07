@@ -5,7 +5,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-100 bg-white">
+    <header className="sticky top-0 z-50 bg-white shadow-xl">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="text-3xl font-bold text-blue-600">
           Holidaze
@@ -69,6 +69,13 @@ export default function Navbar() {
             onClick={() => setMenuOpen(false)}
           >
             Login
+          </Link>
+          <Link
+            to="/register"
+            className="block hover:text-blue-600"
+            onClick={() => setMenuOpen(false)}
+          >
+            Register
           </Link>
         </nav>
       )}

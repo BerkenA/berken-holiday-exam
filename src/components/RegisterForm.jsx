@@ -45,7 +45,7 @@ function RegisterForm() {
   const [message, setMessage] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-  const login = AuthToken.getState().login;
+  const login = AuthToken((state) => state.login);
 
   async function handleSubmit(e) {
     e.preventDefault();
