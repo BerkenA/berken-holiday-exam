@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthToken from "./Authtoken";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const DEFAULT_AVATAR_URL =
@@ -42,6 +44,8 @@ function RegisterForm() {
 
   const [message, setMessage] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
+  const login = AuthToken.getState().login;
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -68,6 +72,8 @@ function RegisterForm() {
         throw new Error(data.errors?.[0]?.message || "Registration failed");
 
       setMessage("User registered successfully!");
+      login(data.user, data.accessToken);
+      navigate("/profile");
     } catch (error) {
       setMessage(error.message);
     }
