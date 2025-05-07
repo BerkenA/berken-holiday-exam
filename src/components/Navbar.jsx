@@ -5,8 +5,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header>
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center sticky border-b-1">
+    <header className="sticky top-0 z-100 bg-white">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="text-3xl font-bold text-blue-600">
           Holidaze
         </Link>

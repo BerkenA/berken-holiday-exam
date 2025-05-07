@@ -56,7 +56,7 @@ function Home() {
           <img
             src={
               booking.venue?.media?.[0]?.url ||
-              "./public/No-Image-Placeholder.svg"
+              "/No-Image-Placeholder.svg"
             }
             alt={booking.venue?.media?.[0]?.alt || "Venue image"}
             className="w-full h-48 object-cover rounded-lg mb-2"
