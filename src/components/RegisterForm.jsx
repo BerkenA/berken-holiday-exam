@@ -10,10 +10,18 @@ function RegisterForm() {
     venueManager: false,
     avatar: "",
   });
+
   const [message, setMessage] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if (formData.password !== confirmPassword) {
+      setMessage("Passwords doesn't match");
+      return;
+    }
+
     try {
       const response = await fetch(`${BASE_URL}/auth/register`, {
         method: "POST",
@@ -36,7 +44,7 @@ function RegisterForm() {
     <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
       <input
         type="text"
-        placeholder="Name"
+        placeholder="Username"
         value={formData.name}
         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         required
@@ -55,6 +63,14 @@ function RegisterForm() {
         placeholder="Password"
         value={formData.password}
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        required
+        className="border p-2 w-full"
+      />
+      <input
+        type="password"
+        placeholder="Confirm password"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
         required
         className="border p-2 w-full"
       />

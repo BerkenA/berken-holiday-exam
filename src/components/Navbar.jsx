@@ -24,6 +24,9 @@ export default function Navbar() {
           <Link to="/login" className="hover:text-blue-600">
             Login
           </Link>
+          <Link to="/register" className="hover:text-blue-600">
+            Register
+          </Link>
         </nav>
 
         {/* Burger menu button */}
