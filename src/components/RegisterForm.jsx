@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
+const DEFAULT_AVATAR_URL =
+  "https://www.svgrepo.com/show/452030/avatar-default.svg";
 
 function PasswordInput({ value, onChange, placeholder }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,7 +34,10 @@ function RegisterForm() {
     email: "",
     password: "",
     venueManager: false,
-    avatar: "",
+    avatar: {
+      url: "",
+      alt: "",
+    },
   });
 
   const [message, setMessage] = useState("");
@@ -40,6 +45,10 @@ function RegisterForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if (!formData.avatar.url) {
+      formData.avatar.url = DEFAULT_AVATAR_URL;
+    }
 
     if (formData.password !== confirmPassword) {
       setMessage("Passwords doesn't match");
@@ -82,6 +91,21 @@ function RegisterForm() {
         required
         className="border p-2 w-full rounded"
       />
+      <input
+        type="url"
+        placeholder="Avatar URL (optional)"
+        onChange={(e) =>
+          setFormData({
+            ...formData,
+            avatar: {
+              ...formData.avatar,
+              url: e.target.value,
+            },
+          })
+        }
+        className="border p-2 w-full rounded"
+      />
+
       <PasswordInput
         placeholder="Password"
         value={formData.password}

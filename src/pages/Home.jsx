@@ -13,7 +13,7 @@ function Home() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/bookings?_venue=true`, {
+        const response = await fetch(`${BASE_URL}/holidaze/bookings?_venue=true`, {
           headers: {
             Authorization: `Bearer ${BEARER_TOKEN}`,
             "Content-Type": "application/json",
