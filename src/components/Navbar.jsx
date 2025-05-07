@@ -41,7 +41,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <nav className="sm:hidden bg-white border-b px-4 py-2 space-y-2">
+        <nav className="sm:hidden absolute top-16 left-0 w-full bg-white shadow-md z-50 px-4 py-4 space-y-2 border-t-1">
           <Link
             to="/"
             className="block hover:text-blue-600"
