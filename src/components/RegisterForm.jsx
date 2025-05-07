@@ -2,6 +2,30 @@ import { useState } from "react";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+function PasswordInput({ value, onChange, placeholder }) {
+  const [showPassword, setShowPassword] = useState(false);
+  return (
+    <div className="relative">
+      <input
+        type={showPassword ? "text" : "password"}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        required
+        className="border p-2 w-full pr-10"
+      />
+      <button
+        type="button"
+        onClick={() => setShowPassword((prev) => !prev)}
+        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
+        aria-label="See password"
+      >
+        {showPassword ? "🙈" : "👁️"}
+      </button>
+    </div>
+  );
+}
+
 function RegisterForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -48,7 +72,7 @@ function RegisterForm() {
         value={formData.name}
         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         required
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
       />
       <input
         type="email"
@@ -56,23 +80,18 @@ function RegisterForm() {
         value={formData.email}
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         required
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
       />
-      <input
-        type="password"
+      <PasswordInput
         placeholder="Password"
         value={formData.password}
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-        required
-        className="border p-2 w-full"
       />
-      <input
-        type="password"
+
+      <PasswordInput
         placeholder="Confirm password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
-        required
-        className="border p-2 w-full"
       />
 
       <label className="flex items-center space-x-2">
@@ -88,7 +107,7 @@ function RegisterForm() {
 
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded"
+        className="bg-blue-600 text-white px-4 py-2 rounded w-full"
       >
         Register
       </button>
