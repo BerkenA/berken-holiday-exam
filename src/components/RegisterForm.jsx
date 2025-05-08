@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthToken from "./Authtoken";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -157,6 +158,15 @@ function RegisterForm() {
       >
         Register
       </button>
+
+      <div className="flex justify-center">
+        <p>
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Login here
+          </Link>
+        </p>
+      </div>
 
       {message && <p className="text-red-500">{message}</p>}
     </form>

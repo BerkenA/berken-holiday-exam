@@ -89,7 +89,7 @@ function LoginForm() {
 
       <div className="flex justify-center">
         <p>
-          Already have an account?{" "}
+          Dont have an account?{" "}
           <Link to="/register" className="text-blue-600 hover:underline">
             Register here
           </Link>

@@ -1,12 +1,50 @@
+import { useEffect, useState } from "react";
 import AuthToken from "../../components/Authtoken";
 import { Link } from "react-router-dom";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+const API_KEY = import.meta.env.VITE_API_KEY
+
 function Profile() {
   const user = AuthToken((state) => state.user);
+  const token = AuthToken((state) => state.token);
+  const [profile, setProfile] = useState(null);
+  const [error, setError] = useState("");
 
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        const response = await fetch(
+          `${BASE_URL}/holidaze/profiles/${user.name}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "X-Noroff-API-Key": API_KEY,
+            },
+          }
+        );
+        const data = await response.json();
+        if (!response.ok)
+          throw new Error(
+            data.errors?.[0]?.message || "Failed to fetch profile"
+          );
+        setProfile(data.data);
+      } catch (err) {
+        setError(err.message);
+      }
+    }
+
+    if (user?.name) {
+      fetchProfile();
+    }
+  }, [user, token]);
+
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!profile) return <p>Loading profile...</p>;
   if (!user) {
     return <p className="text-center mt-10">You are not logged in</p>;
   }
+
   return (
     <div className="min-h-screen flex justify-center p-6">
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full text-center">
