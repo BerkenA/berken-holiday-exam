@@ -24,9 +24,6 @@ export default function Navbar() {
           <Link to="/login" className="hover:text-blue-600">
             Login
           </Link>
-          <Link to="/register" className="hover:text-blue-600">
-            Register
-          </Link>
         </nav>
 
         {/* Burger menu button */}
@@ -69,13 +66,6 @@ export default function Navbar() {
             onClick={() => setMenuOpen(false)}
           >
             Login
-          </Link>
-          <Link
-            to="/register"
-            className="block hover:text-blue-600"
-            onClick={() => setMenuOpen(false)}
-          >
-            Register
           </Link>
         </nav>
       )}

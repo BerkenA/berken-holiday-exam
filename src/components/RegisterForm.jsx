@@ -71,8 +71,23 @@ function RegisterForm() {
       if (!response.ok)
         throw new Error(data.errors?.[0]?.message || "Registration failed");
 
+      const loginResponse = await fetch(`${BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const loginData = await loginResponse.json();
+
+      if (!loginResponse.ok) {
+        throw new Error(loginData.errors?.[0]?.message || "Something went wrong, try again");
+      }
+
       setMessage("User registered successfully!");
-      login(data.user, data.accessToken);
+      login(loginData.data, loginData.data.accessToken);
       navigate("/profile");
     } catch (error) {
       setMessage(error.message);
@@ -100,6 +115,7 @@ function RegisterForm() {
       <input
         type="url"
         placeholder="Avatar URL (optional)"
+        value={formData.avatar.url}
         onChange={(e) =>
           setFormData({
             ...formData,
