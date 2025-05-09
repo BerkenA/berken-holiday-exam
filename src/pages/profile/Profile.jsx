@@ -15,7 +15,7 @@ function Profile() {
     async function fetchProfile() {
       try {
         const response = await fetch(
-          `${BASE_URL}/holidaze/profiles/${user.name}`,
+          `${BASE_URL}/holidaze/profiles/${user.name}?_bookings=true&_venues=true`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -75,6 +75,38 @@ function Profile() {
         {user?.venueManager && (
           <p className="text-sm text-green-600 mt-2">Venue Manager</p>
         )}
+        <div className="h-[70vh] flex gap-4 mt-6">
+          <div className=" flex-1 p-4 text-black rounded-xl overflow-auto">
+            <h2 className="text-xl font-semibold mb-4">Your Venues</h2>
+            {profile.venues?.length ? (
+              profile.venues.map((venue) => (
+                <div key={venue.id} className="mb-4 p-3 bg-red-600 rounded">
+                  <h3 className="font-bold">{venue.name}</h3>
+                  <p>{venue.location?.city}</p>
+                </div>
+              ))
+            ) : (
+              <p>You have no venues.</p>
+            )}
+          </div>
+
+          <div className="flex-1 p-4 text-black rounded-xl overflow-auto">
+            <h2 className="text-xl font-semibold mb-4">Your Bookings</h2>
+            {profile.bookings?.length ? (
+              profile.bookings.map((booking) => (
+                <div key={booking.id} className="mb-4 p-3 rounded">
+                  <h3 className="font-bold">{booking.venue.name}</h3>
+                  <p>
+                    From: {new Date(booking.dateFrom).toLocaleDateString()} —
+                    To: {new Date(booking.dateTo).toLocaleDateString()}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p>You have no bookings.</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
