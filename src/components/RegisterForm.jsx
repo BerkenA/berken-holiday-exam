@@ -154,7 +154,7 @@ function RegisterForm() {
 
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+        className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:cursor-pointer"
       >
         Register
       </button>

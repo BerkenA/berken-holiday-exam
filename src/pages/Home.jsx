@@ -93,12 +93,15 @@ function Home() {
             })}
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            <strong>Updated:</strong>{" "}
+            Updated:{" "}
             {new Date(booking.updated).toLocaleDateString("en-GB", {
               day: "numeric",
               month: "long",
               year: "numeric",
             })}
+          </p>
+          <p className="text-xl">
+            <strong>Price:</strong> {booking.venue.price}$
           </p>
         </div>
       ))}

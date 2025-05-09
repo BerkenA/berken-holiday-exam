@@ -1,8 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import AuthToken from "./Authtoken";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const logout = AuthToken((state) => state.logout);
+  const token = AuthToken((state) => state.token)
+  const [logOutMessage, setLogOutMessage] = useState(false)
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    setLogOutMessage(true);
+
+    setTimeout(() => {
+      logout();
+      navigate("/login");
+    }, 2000);
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-xl">
@@ -11,19 +25,28 @@ export default function Navbar() {
           Holidaze
         </Link>
         {/* Desktop Menu */}
-        <nav className="space-x-4 hidden sm:flex">
-          <Link to="/" className="hover:text-blue-600">
+        <nav className="space-x-4 hidden sm:flex items-center">
+          <Link to="/" className="hover:text-blue-600 text-xl">
             Home
           </Link>
-          <Link to="/venue" className="hover:text-blue-600">
+          <Link to="/venue" className="hover:text-blue-600 text-xl">
             Venues
           </Link>
-          <Link to="/profile" className="hover:text-blue-600">
+          <Link to="/profile" className="hover:text-blue-600 text-xl">
             Profile
           </Link>
-          <Link to="/login" className="hover:text-blue-600">
-            Login
-          </Link>
+          {!token ? (
+            <Link to="/login" className="hover:text-blue-600 text-xl">
+              Login
+            </Link>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 cursor-pointer text-xl"
+            >
+              Logout
+            </button>
+          )}
         </nav>
 
         {/* Burger menu button */}

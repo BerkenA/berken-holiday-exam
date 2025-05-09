@@ -43,7 +43,7 @@ function LoginForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${BASE_URL}/auth/login`, {
+      const response = await fetch(`${BASE_URL}/auth/login?_holidaze=true`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -56,7 +56,7 @@ function LoginForm() {
       }
 
       setMessage("Login successful!");
-      login(data.data, data.data.accessToken);
+      login(data.data, data.data.accessToken, data.venueManager);
       navigate("/profile");
     } catch (error) {
       setMessage(error.message);
@@ -82,7 +82,7 @@ function LoginForm() {
 
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+        className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:cursor-pointer"
       >
         Login
       </button>

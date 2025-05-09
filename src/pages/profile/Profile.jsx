@@ -3,7 +3,7 @@ import AuthToken from "../../components/Authtoken";
 import { Link } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-const API_KEY = import.meta.env.VITE_API_KEY
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 function Profile() {
   const user = AuthToken((state) => state.user);
@@ -40,10 +40,17 @@ function Profile() {
   }, [user, token]);
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!profile) return <p>Loading profile...</p>;
-  if (!user) {
-    return <p className="text-center mt-10">You are not logged in</p>;
-  }
+  if (!profile || !user)
+    return (
+      <div className="h-screen flex items-center justify-center text-2xl text-center px-4">
+        <p>
+          You are not logged in. You have to be logged in to see this page.{" "}
+          <Link to="/login" className="text-blue-600">
+            Click here to log in
+          </Link>
+        </p>
+      </div>
+    );
 
   return (
     <div className="min-h-screen flex justify-center p-6">
@@ -64,7 +71,8 @@ function Profile() {
         )}
         <h1 className="text-2xl font-semibold text-blue-600">{user.name}</h1>
         <p className="text-gray-600">{user.email}</p>
-        {user.venueManager && (
+
+        {user?.venueManager && (
           <p className="text-sm text-green-600 mt-2">Venue Manager</p>
         )}
       </div>
