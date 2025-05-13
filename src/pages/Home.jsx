@@ -77,28 +77,11 @@ function Home() {
               year: "numeric",
             })}
           </p>
-
           <p>
             <strong>Guests:</strong> {booking.guests}
           </p>
           <p className="text-m text-blue-600">
             {truncateText(booking.venue.description, 55)}
-          </p>
-          <p className="text-sm text-gray-500 mt-2">
-            <strong>Created:</strong>{" "}
-            {new Date(booking.created).toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </p>
-          <p className="text-sm text-gray-500 mt-2">
-            Updated:{" "}
-            {new Date(booking.updated).toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
           </p>
           <p className="text-xl">
             <strong>Price:</strong> {booking.venue.price}$

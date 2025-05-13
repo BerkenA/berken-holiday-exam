@@ -9,6 +9,7 @@ function Profile() {
   const user = AuthToken((state) => state.user);
   const token = AuthToken((state) => state.token);
   const [profile, setProfile] = useState(null);
+  const [bookings, setBookings] = useState([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -33,9 +34,33 @@ function Profile() {
         setError(err.message);
       }
     }
+    async function fetchUserBookings() {
+      try {
+        const response = await fetch(
+          `${BASE_URL}/holidaze/profiles/${user.name}/bookings`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "X-Noroff-API-Key": API_KEY,
+            },
+          }
+        );
+        console.log("Fetching bookings for user:", user.name);
+        const data = await response.json();
+        console.log("Bookings API response:", data);
+        if (!response.ok)
+          throw new Error(
+            data.errors?.[0]?.message || "Failed to fetch bookings"
+          );
+        setBookings(data.data);
+      } catch (err) {
+        setError(err.message);
+      }
+    }
 
     if (user?.name) {
       fetchProfile();
+      fetchUserBookings();
     }
   }, [user, token]);
 
@@ -73,14 +98,14 @@ function Profile() {
         <p className="text-gray-600">{user.email}</p>
 
         {user?.venueManager && (
-          <p className="text-sm text-green-600 mt-2">Venue Manager</p>
+          <p className="text-l text-green-600 mt-2">Venue Manager</p>
         )}
         <div className="h-[70vh] flex gap-4 mt-6">
           <div className=" flex-1 p-4 text-black rounded-xl overflow-auto">
             <h2 className="text-xl font-semibold mb-4">Your Venues</h2>
             {profile.venues?.length ? (
               profile.venues.map((venue) => (
-                <div key={venue.id} className="mb-4 p-3 bg-red-600 rounded">
+                <div key={venue.id} className="mb-4 p-3 bg-gray-100 rounded shadow">
                   <h3 className="font-bold">{venue.name}</h3>
                   <p>{venue.location?.city}</p>
                 </div>
@@ -92,13 +117,23 @@ function Profile() {
 
           <div className="flex-1 p-4 text-black rounded-xl overflow-auto">
             <h2 className="text-xl font-semibold mb-4">Your Bookings</h2>
-            {profile.bookings?.length ? (
-              profile.bookings.map((booking) => (
-                <div key={booking.id} className="mb-4 p-3 rounded">
-                  <h3 className="font-bold">{booking.venue.name}</h3>
+            {bookings.length ? (
+              bookings.map((booking) => (
+                <div
+                  key={booking.id}
+                  className="mb-4 p-3 bg-gray-100 rounded shadow"
+                >
                   <p>
-                    From: {new Date(booking.dateFrom).toLocaleDateString()} —
-                    To: {new Date(booking.dateTo).toLocaleDateString()}
+                    <strong>ID:</strong> {booking.id}
+                  </p>
+                  <p>
+                    <strong>From:</strong>{" "}
+                    {new Date(booking.dateFrom).toLocaleDateString()} —
+                    <strong> To:</strong>{" "}
+                    {new Date(booking.dateTo).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Guests:</strong> {booking.guests}
                   </p>
                 </div>
               ))
