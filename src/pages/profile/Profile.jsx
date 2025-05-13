@@ -45,9 +45,7 @@ function Profile() {
             },
           }
         );
-        console.log("Fetching bookings for user:", user.name);
         const data = await response.json();
-        console.log("Bookings API response:", data);
         if (!response.ok)
           throw new Error(
             data.errors?.[0]?.message || "Failed to fetch bookings"
@@ -80,13 +78,10 @@ function Profile() {
   return (
     <div className="min-h-screen flex justify-center p-6">
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full text-center">
-        <button className="rounded">
-          <Link to="/edit-profile">Edit profile</Link>
-        </button>
-        {user.avatar?.url ? (
+        {profile.avatar?.url ? (
           <img
-            src={user.avatar.url}
-            alt={user.avatar.alt || "User avatar"}
+            src={profile.avatar.url}
+            alt={profile.avatar.alt || "User avatar"}
             className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
           />
         ) : (
@@ -94,18 +89,26 @@ function Profile() {
             No Avatar
           </div>
         )}
-        <h1 className="text-2xl font-semibold text-blue-600">{user.name}</h1>
-        <p className="text-gray-600">{user.email}</p>
 
-        {user?.venueManager && (
+        <h1 className="text-2xl font-semibold text-blue-600">{profile.name}</h1>
+        <p className="text-gray-600">{profile.email}</p>
+        <p className="text-gray-600">{profile.bio}</p>
+
+        {profile.venueManager && (
           <p className="text-l text-green-600 mt-2">Venue Manager</p>
         )}
+        <button className="bg-blue-600 text-white px-4 py-2 rounded w-full cursor-pointer max-w-1/9 mt-4">
+          <Link to="/edit-profile">Edit profile</Link>
+        </button>
         <div className="h-[70vh] flex gap-4 mt-6">
           <div className=" flex-1 p-4 text-black rounded-xl overflow-auto">
             <h2 className="text-xl font-semibold mb-4">Your Venues</h2>
             {profile.venues?.length ? (
               profile.venues.map((venue) => (
-                <div key={venue.id} className="mb-4 p-3 bg-gray-100 rounded shadow">
+                <div
+                  key={venue.id}
+                  className="mb-4 p-3 bg-gray-100 rounded shadow"
+                >
                   <h3 className="font-bold">{venue.name}</h3>
                   <p>{venue.location?.city}</p>
                 </div>
