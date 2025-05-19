@@ -5,8 +5,8 @@ import AuthToken from "./Authtoken";
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const logout = AuthToken((state) => state.logout);
-  const token = AuthToken((state) => state.token)
-  const [logOutMessage, setLogOutMessage] = useState(false)
+  const token = AuthToken((state) => state.token);
+  const [logOutMessage, setLogOutMessage] = useState(false);
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -14,6 +14,7 @@ export default function Navbar() {
 
     setTimeout(() => {
       logout();
+      setLogOutMessage(false);
       navigate("/login");
     }, 2000);
   }
@@ -24,6 +25,12 @@ export default function Navbar() {
         <Link to="/" className="text-3xl font-bold text-blue-600">
           Holidaze
         </Link>
+
+        {logOutMessage && (
+          <div className="absolute top-16 right-4 bg-blue-600 border-blue-500 text-white px-4 py-2 rounded shadow-md">
+            You have been logged out. Redirecting to login...
+          </div>
+        )}
         {/* Desktop Menu */}
         <nav className="space-x-4 hidden sm:flex items-center">
           <Link to="/" className="hover:text-blue-600 text-xl">
