@@ -16,8 +16,9 @@ const AppRoutes = () => {
       <Route element={<App />}>
         <Route path="/" element={<Home />} />
         <Route path="/About" element={<About />} />
+        
         {/* Need to add one route for specific venue and one for all venues (With filters) */}
-        <Route path="/Venue" element={<Venue />} />
+        <Route path="/Venue/:id" element={<Venue />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/Booking" element={<Booking />} />

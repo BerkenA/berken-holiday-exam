@@ -48,16 +48,14 @@ function Home() {
   return (
     <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {bookings.map((booking) => (
-        <div
+        <Link
           key={booking.id}
-          className="bg-white shadow-xl rounded-xl p-4 border border-gray-200"
+          to={`/venue/${booking.venue.id}`}
+          className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition block"
         >
           <h2 className="text-lg font-semibold mb-2">{booking.venue.name}</h2>
           <img
-            src={
-              booking.venue?.media?.[0]?.url ||
-              "/No-Image-Placeholder.svg"
-            }
+            src={booking.venue?.media?.[0]?.url || "/No-Image-Placeholder.svg"}
             alt={booking.venue?.media?.[0]?.alt || "Venue image"}
             className="w-full h-48 object-cover rounded-lg mb-2"
           />
@@ -86,7 +84,7 @@ function Home() {
           <p className="text-xl">
             <strong>Price:</strong> {booking.venue.price}$
           </p>
-        </div>
+        </Link>
       ))}
     </div>
   );
