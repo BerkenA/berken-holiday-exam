@@ -32,6 +32,7 @@ export default function CreateVenue() {
     },
   });
 
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -194,7 +195,7 @@ export default function CreateVenue() {
 
         {formData.media[0].url && (
           <div className="my-4">
-            <p className="text-sm mb-1">Image Preview:</p>
+            <p className="mb-1">Image Preview:</p>
             <img
               src={formData.media[0].url}
               alt={formData.media[0].alt || "Venue media preview"}

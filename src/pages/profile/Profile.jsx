@@ -37,7 +37,7 @@ function Profile() {
     async function fetchUserBookings() {
       try {
         const response = await fetch(
-          `${BASE_URL}/holidaze/profiles/${user.name}/bookings`,
+          `${BASE_URL}/holidaze/profiles/${user.name}/bookings?_venue=true`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -98,10 +98,10 @@ function Profile() {
           <p className="text-l text-green-600 mt-2">Venue Manager</p>
         )}
         <div className="flex justify-center gap-4">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer mt-4">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer mt-4 hover:bg-blue-800">
             <Link to="/edit-profile">Edit profile</Link>
           </button>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer mt-4">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer mt-4 hover:bg-blue-800">
             <Link to="/CreateVenue">Create Venue</Link>
           </button>
         </div>
@@ -110,13 +110,14 @@ function Profile() {
             <h2 className="text-xl font-semibold mb-4">Your Venues</h2>
             {profile.venues?.length ? (
               profile.venues.map((venue) => (
-                <div
+                <Link
+                  to={`/Venue/${venue.id}`}
                   key={venue.id}
-                  className="mb-4 p-3 bg-gray-100 rounded shadow"
+                  className="block mb-4 p-3 bg-gray-100 rounded shadow hover:bg-gray-200 transition"
                 >
                   <h3 className="font-bold">{venue.name}</h3>
                   <p>{venue.location?.city}</p>
-                </div>
+                </Link>
               ))
             ) : (
               <p>You have no venues.</p>
@@ -127,23 +128,25 @@ function Profile() {
             <h2 className="text-xl font-semibold mb-4">Your Bookings</h2>
             {bookings.length ? (
               bookings.map((booking) => (
-                <div
+                <Link
+                  to={`/venue/${booking.venue.id}`}
+                  state={{booking}}
                   key={booking.id}
-                  className="mb-4 p-3 bg-gray-100 rounded shadow"
+                  className="block mb-4 p-3 bg-gray-100 rounded shadow hover:bg-gray-200 transition"
                 >
                   <p>
                     <strong>ID:</strong> {booking.id}
                   </p>
                   <p>
                     <strong>From:</strong>{" "}
-                    {new Date(booking.dateFrom).toLocaleDateString()} —
-                    <strong> To:</strong>{" "}
+                    {new Date(booking.dateFrom).toLocaleDateString()} —{" "}
+                    <strong>To:</strong>{" "}
                     {new Date(booking.dateTo).toLocaleDateString()}
                   </p>
                   <p>
                     <strong>Guests:</strong> {booking.guests}
                   </p>
-                </div>
+                </Link>
               ))
             ) : (
               <p>You have no bookings.</p>
