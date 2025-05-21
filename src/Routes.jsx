@@ -9,6 +9,7 @@ import Booking from "./pages/Booking";
 import Venue from "./pages/venue/Venue";
 import Profile from "./pages/profile/Profile";
 import Contact from "./pages/Contact";
+import CreateVenue from "./pages/venue/CreateVenue";
 
 const AppRoutes = () => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes = () => {
       <Route element={<App />}>
         <Route path="/" element={<Home />} />
         <Route path="/About" element={<About />} />
+        <Route path="/CreateVenue" element={<CreateVenue />} />
         
         {/* Need to add one route for specific venue and one for all venues (With filters) */}
         <Route path="/Venue/:id" element={<Venue />} />

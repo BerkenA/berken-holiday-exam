@@ -97,9 +97,14 @@ function Profile() {
         {profile.venueManager && (
           <p className="text-l text-green-600 mt-2">Venue Manager</p>
         )}
-        <button className="bg-blue-600 text-white px-4 py-2 rounded w-full cursor-pointer max-w-1/9 mt-4">
-          <Link to="/edit-profile">Edit profile</Link>
-        </button>
+        <div className="flex justify-center gap-4">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer mt-4">
+            <Link to="/edit-profile">Edit profile</Link>
+          </button>
+          <button className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer mt-4">
+            <Link to="/CreateVenue">Create Venue</Link>
+          </button>
+        </div>
         <div className="h-[70vh] flex gap-4 mt-6">
           <div className=" flex-1 p-4 text-black rounded-xl overflow-auto">
             <h2 className="text-xl font-semibold mb-4">Your Venues</h2>
