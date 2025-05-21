@@ -192,6 +192,22 @@ export default function CreateVenue() {
           />
         </label>
 
+        {formData.media[0].url && (
+          <div className="my-4">
+            <p className="text-sm mb-1">Image Preview:</p>
+            <img
+              src={formData.media[0].url}
+              alt={formData.media[0].alt || "Venue media preview"}
+              className="w-full h-48 object-cover rounded"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src =
+                  "https://via.placeholder.com/256x160?text=Invalid+URL";
+              }}
+            />
+          </div>
+        )}
+
         <label className="block">
           Alt Text:
           <input
@@ -315,14 +331,14 @@ export default function CreateVenue() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700"
+            className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700 cursor-pointer"
           >
             {loading ? "Creating..." : "Create Venue"}
           </button>
           <button
             type="button"
             onClick={() => navigate("/profile")}
-            className="bg-red-600 text-white px-4 py-2 rounded w-full hover:bg-red-700"
+            className="bg-red-600 text-white px-4 py-2 rounded w-full hover:bg-red-700 cursor-pointer"
           >
             Cancel
           </button>
