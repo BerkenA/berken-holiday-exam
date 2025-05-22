@@ -64,13 +64,12 @@ function Profile() {
   }, [user, token]);
 
   if (!profile) {
-  return (
-    <div className="min-h-screen flex justify-center items-center p-6">
-      <p>Loading profile...</p>
-    </div>
-  );
-}
-
+    return (
+      <div className="min-h-screen flex justify-center items-center p-6">
+        <p>Loading profile...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex justify-center p-6 flex-wrap">
@@ -103,9 +102,14 @@ function Profile() {
           </button>
         </div>
         <div className="flex gap-8 flex-wrap flex-col md:flex-row mt-6">
-          <div className="flex-1 w-full md:w-1/2 min-w-0 flex flex-col text-left">
-
-            <h2 className="text-xl font-semibold mb-6 text-center">Your Venues</h2>
+          <div
+            className={`flex-1 w-full md:w-1/2 min-w-0 flex flex-col ${
+              !profile.venues?.length ? "text-center" : "text-left"
+            }`}
+          >
+            <h2 className="text-xl font-semibold mb-6 text-center">
+              Your Venues
+            </h2>
             <div className="flex flex-col gap-4">
               {profile.venues?.length ? (
                 profile.venues.map((venue) => (
@@ -135,9 +139,13 @@ function Profile() {
             </div>
           </div>
 
-            <div className="flex-1 w-full md:w-1/2 min-w-0 flex flex-col">
+          <div
+            className={`flex-1 w-full md:w-1/2 min-w-0 flex flex-col ${
+              bookings.length === 0 ? "text-center" : "text-left"
+            }`}
+          >
             <h2 className="text-xl font-semibold mb-6">Your Bookings</h2>
-            <div className="flex flex-col gap-4 text-left">
+            <div className="flex flex-col gap-4">
               {bookings.length ? (
                 bookings.map((booking) => (
                   <Link
