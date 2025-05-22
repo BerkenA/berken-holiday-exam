@@ -14,6 +14,7 @@ function Venue() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = AuthToken((state) => state.token);
+  const userEmail = AuthToken((state) => state.user?.email);
 
   useEffect(() => {
     async function fetchVenue() {
@@ -27,7 +28,7 @@ function Venue() {
         const result = await response.json();
         setVenue(result.data);
       } catch (error) {
-        setError(error.message);
+        toast.error(error.message);
       } finally {
         setLoading(false);
       }
@@ -37,8 +38,13 @@ function Venue() {
   }, [id]);
 
   if (loading) return <p>Loading venue...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p>Error: {toast.error(error)}</p>;
   if (!venue) return <p>No venue found.</p>;
+
+  const isVenueManager =
+    token &&
+    venue.owner &&
+    userEmail?.trim().toLowerCase() === venue.owner.email?.trim().toLowerCase();
 
   async function onConfirmDelete() {
     try {
@@ -60,41 +66,44 @@ function Venue() {
     }
   }
 
-function handleDelete() {
-  confirmAlert({
-    title: 'Confirm to delete',
-    message: 'Are you sure you want to delete this venue?',
-    buttons: [
-      {
-        label: 'Yes',
-        onClick: () => {
-          onConfirmDelete();
+  function handleDelete() {
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure you want to delete this venue?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            onConfirmDelete();
+          },
         },
-      },
-      {
-        label: 'No',
-        onClick: () => {},
-      },
-    ],
-  });
-}
-
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="flex gap-4 mt-6">
-        <button
-          onClick={() => navigate(`/venue/edit/${id}`)}
-          className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-800"
-        >
-          Edit
-        </button>
-        <button
-          onClick={handleDelete}
-          className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800"
-        >
-          Delete
-        </button>
+        {isVenueManager && (
+          <>
+            <button
+              onClick={() => navigate(`/venue/edit/${id}`)}
+              className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-800"
+            >
+              Edit
+            </button>
+            <button
+              onClick={handleDelete}
+              className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800"
+            >
+              Delete
+            </button>
+          </>
+        )}
       </div>
       <h1 className="text-3xl font-bold mb-4">{venue.name}</h1>
 
