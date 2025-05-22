@@ -12,7 +12,6 @@ function Venue() {
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const token = AuthToken((state) => state.token);
   const userEmail = AuthToken((state) => state.user?.email);
 
@@ -38,7 +37,6 @@ function Venue() {
   }, [id]);
 
   if (loading) return <p>Loading venue...</p>;
-  if (error) return <p>Error: {toast.error(error)}</p>;
   if (!venue) return <p>No venue found.</p>;
 
   const isVenueManager =

@@ -1,17 +1,36 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import AuthToken from "./Authtoken";
 import { toast } from "react-toastify";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
   const logout = AuthToken((state) => state.logout);
   const token = AuthToken((state) => state.token);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    }
+
+    if (menuOpen) {
+        document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
+
   function handleLogout() {
     toast.info("You have been logged out. Redirecting to login...", {
-      autoClose: 2000,
+      autoClose: 1000,
       onClose: () => {
         logout();
         navigate("/login");
@@ -60,7 +79,10 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <nav className="sm:hidden absolute top-16 left-0 w-full bg-white shadow-md z-50 px-4 py-4 space-y-2 border-t-1">
+        <nav
+          ref={menuRef}
+          className="sm:hidden absolute top-16 left-0 w-full bg-white shadow-md z-50 px-4 py-4 space-y-2 border-t-1"
+        >
           <Link
             to="/"
             className="block hover:text-blue-600"

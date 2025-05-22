@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import truncateText from "../components/TruncateText";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -36,11 +37,6 @@ function Home() {
 
     fetchBookings();
   }, []);
-
-  function truncateText(text, maxLength) {
-    if (!text) return "";
-    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
-  }
 
   if (loading) return <p>Loading bookings...</p>;
   if (error) return <p>Error: {error}</p>;

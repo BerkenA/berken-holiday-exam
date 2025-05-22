@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthToken from "../../components/Authtoken";
 import { toast } from "react-toastify";
+import HandleDiscard from "../../components/handleDiscard";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 export default function CreateVenue() {
   const token = AuthToken((state) => state.token);
-
+  const handleDiscard = HandleDiscard();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -329,7 +330,7 @@ export default function CreateVenue() {
           </button>
           <button
             type="button"
-            onClick={() => navigate("/profile")}
+            onClick={handleDiscard}
             className="bg-red-600 text-white px-4 py-2 rounded w-full hover:bg-red-700 cursor-pointer"
           >
             Cancel

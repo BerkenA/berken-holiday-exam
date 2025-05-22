@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthToken from "../../components/Authtoken";
 import { toast } from "react-toastify";
+import HandleDiscard from "../../components/handleDiscard";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -11,7 +12,7 @@ function EditProfile() {
   const token = AuthToken((state) => state.token);
   const updateUser = AuthToken((state) => state.updateUser);
   const navigate = useNavigate();
-
+  const handleDiscard = HandleDiscard();
   const [bio, setBio] = useState(user?.bio || "");
   const [avatarUrl, setAvatarUrl] = useState(user?.avatar?.url || "");
   const [avatarAlt, setAvatarAlt] = useState(user?.avatar?.alt || "");
@@ -176,7 +177,7 @@ function EditProfile() {
           </button>
           <button
             type="button"
-            onClick={() => navigate("/profile")}
+            onClick={handleDiscard}
             className="bg-red-600 text-white px-4 py-2 rounded w-full cursor-pointer hover:bg-red-800"
           >
             Discard Changes
