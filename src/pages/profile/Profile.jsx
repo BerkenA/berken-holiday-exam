@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AuthToken from "../../components/Authtoken";
 import { Link } from "react-router-dom";
 import truncateText from "../../components/TruncateText";
+import { toast } from "react-toastify";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -11,7 +12,6 @@ function Profile() {
   const token = AuthToken((state) => state.token);
   const [profile, setProfile] = useState(null);
   const [bookings, setBookings] = useState([]);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchProfile() {
@@ -32,7 +32,7 @@ function Profile() {
           );
         setProfile(data.data);
       } catch (err) {
-        setError(err.message);
+        toast.error(err.message);
       }
     }
     async function fetchUserBookings() {
@@ -53,7 +53,7 @@ function Profile() {
           );
         setBookings(data.data);
       } catch (err) {
-        setError(err.message);
+        toast.error(err.message);
       }
     }
 
@@ -63,18 +63,14 @@ function Profile() {
     }
   }, [user, token]);
 
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!profile || !user)
-    return (
-      <div className="h-screen flex items-center justify-center text-2xl text-center px-4">
-        <p>
-          You are not logged in. You have to be logged in to see this page.{" "}
-          <Link to="/login" className="text-blue-600">
-            Click here to log in
-          </Link>
-        </p>
-      </div>
-    );
+  if (!profile) {
+  return (
+    <div className="min-h-screen flex justify-center items-center p-6">
+      <p>Loading profile...</p>
+    </div>
+  );
+}
+
 
   return (
     <div className="min-h-screen flex justify-center p-6 flex-wrap">
@@ -106,10 +102,10 @@ function Profile() {
             <Link to="/CreateVenue">Create Venue</Link>
           </button>
         </div>
-        <div className="flex gap-8 flex-wrap p-8 flex-col md:flex-row">
-          <div className="flex-1 w-full md:w-1/2 min-w-0 flex flex-col">
+        <div className="flex gap-8 flex-wrap flex-col md:flex-row mt-6">
+          <div className="flex-1 w-full md:w-1/2 min-w-0 flex flex-col text-left">
 
-            <h2 className="text-xl font-semibold mb-6">Your Venues</h2>
+            <h2 className="text-xl font-semibold mb-6 text-center">Your Venues</h2>
             <div className="flex flex-col gap-4">
               {profile.venues?.length ? (
                 profile.venues.map((venue) => (
@@ -141,7 +137,7 @@ function Profile() {
 
             <div className="flex-1 w-full md:w-1/2 min-w-0 flex flex-col">
             <h2 className="text-xl font-semibold mb-6">Your Bookings</h2>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 text-left">
               {bookings.length ? (
                 bookings.map((booking) => (
                   <Link

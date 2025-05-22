@@ -9,7 +9,7 @@ function LoginCustomer() {
       }}
     >
       <div className="w-full max-w-lg bg-white p-8 shadow-xl rounded-2xl">
-        <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">
+        <h1 className="text-2xl font-bold mb-6 text-center text-blue-600">
           Login
         </h1>
         <LoginForm />
