@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthToken from "../../components/Authtoken";
+import { toast } from "react-toastify";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -17,9 +18,6 @@ function EditProfile() {
   const [bannerUrl, setBannerUrl] = useState(user?.banner?.url || "");
   const [bannerAlt, setBannerAlt] = useState(user?.banner?.alt || "");
   const [venueManager, setVenueManager] = useState(user?.venueManager || false);
-
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   async function handleUpdateProfile(e) {
     e.preventDefault();
@@ -63,10 +61,10 @@ function EditProfile() {
         updateUser(data.data);
       }
 
-      setSuccess("Profile updated successfully!");
+      toast.success("Profile updated successfully!");
       setTimeout(() => navigate("/profile"), 1500);
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message);
     }
   }
 
@@ -168,9 +166,6 @@ function EditProfile() {
           />
           I am a venue manager
         </label>
-
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        {success && <p className="text-green-600 text-center">{success}</p>}
 
         <div className="flex gap-4">
           <button

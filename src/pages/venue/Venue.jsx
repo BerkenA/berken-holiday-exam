@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AuthToken from "../../components/Authtoken";
+import { confirmAlert } from "react-confirm-alert";
+import { toast } from "react-toastify";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -38,12 +40,7 @@ function Venue() {
   if (error) return <p>Error: {error}</p>;
   if (!venue) return <p>No venue found.</p>;
 
-  async function handleDelete() {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this venue?"
-    );
-    if (!confirmDelete) return;
-
+  async function onConfirmDelete() {
     try {
       const response = await fetch(`${BASE_URL}/holidaze/venues/${id}`, {
         method: "DELETE",
@@ -56,14 +53,34 @@ function Venue() {
       if (!response.ok) {
         throw new Error("Failed to delete venue");
       }
-      alert("Venue deleted successfully.");
+      toast.success("Venue deleted successfully.");
       navigate("/profile");
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     }
   }
 
-  return (  
+function handleDelete() {
+  confirmAlert({
+    title: 'Confirm to delete',
+    message: 'Are you sure you want to delete this venue?',
+    buttons: [
+      {
+        label: 'Yes',
+        onClick: () => {
+          onConfirmDelete();
+        },
+      },
+      {
+        label: 'No',
+        onClick: () => {},
+      },
+    ],
+  });
+}
+
+
+  return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="flex gap-4 mt-6">
         <button

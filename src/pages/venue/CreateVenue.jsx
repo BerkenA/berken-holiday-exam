@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthToken from "../../components/Authtoken";
+import { toast } from "react-toastify";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -32,11 +33,8 @@ export default function CreateVenue() {
     },
   });
 
-
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
@@ -74,8 +72,6 @@ export default function CreateVenue() {
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-    setSuccessMessage(null);
 
     if (
       !formData.name ||
@@ -83,7 +79,7 @@ export default function CreateVenue() {
       !formData.price ||
       !formData.maxGuests
     ) {
-      setError(
+      toast.error(
         "Please fill in all required fields (name, description, price, max guests)."
       );
       setLoading(false);
@@ -117,7 +113,7 @@ export default function CreateVenue() {
         );
       }
 
-      setSuccessMessage("Venue created successfully!");
+      toast.success("Venue created successfully!")
       setTimeout(() => navigate("/profile"), 1000);
       setFormData({
         name: "",
@@ -138,7 +134,7 @@ export default function CreateVenue() {
         },
       });
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -321,11 +317,6 @@ export default function CreateVenue() {
             />
           </label>
         </fieldset>
-
-        {error && <p className="text-red-600 text-center">{error}</p>}
-        {successMessage && (
-          <p className="text-green-600 text-center">{successMessage}</p>
-        )}
 
         {/* Submit Button */}
         <div className="flex gap-4">
