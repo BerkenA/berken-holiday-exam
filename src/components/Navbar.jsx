@@ -5,26 +5,27 @@ import { toast } from "react-toastify";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef(null);
+  const wrapperRef = useRef(null);
+
   const logout = AuthToken((state) => state.logout);
   const token = AuthToken((state) => state.token);
   const navigate = useNavigate();
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setMenuOpen(false);
       }
     }
 
     if (menuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("click", handleClickOutside);
     } else {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [menuOpen]);
 
@@ -51,7 +52,7 @@ export default function Navbar() {
             Home
           </Link>
           {token && (
-            <Link to="/profile" className="text-gray-700 hover:text-blue-600">
+            <Link to="/profile" className="hover:text-blue-600">
               Profile
             </Link>
           )}
@@ -72,7 +73,10 @@ export default function Navbar() {
         {/* Burger menu button */}
         <button
           className="sm:hidden text-3xl focus:outline-none"
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setMenuOpen(!menuOpen);
+          }}
           aria-label="Toggle menu"
         >
           {menuOpen ? "X" : "☰"}
@@ -81,32 +85,48 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <nav
-          ref={menuRef}
-          className="sm:hidden absolute top-16 left-0 w-full bg-white shadow-md z-50 px-4 py-4 space-y-2 border-t-1"
+        <div
+          ref={wrapperRef}
+          className="sm:hidden absolute top-16 left-0 w-full z-50"
         >
-          <Link
-            to="/"
-            className="block hover:text-blue-600"
-            onClick={() => setMenuOpen(false)}
-          >
-            Home
-          </Link>
-          <Link
-            to="/profile"
-            className="block hover:text-blue-600"
-            onClick={() => setMenuOpen(false)}
-          >
-            Profile
-          </Link>
-          <Link
-            to="/login"
-            className="block hover:text-blue-600"
-            onClick={() => setMenuOpen(false)}
-          >
-            Login
-          </Link>
-        </nav>
+          <nav className="bg-white shadow-md px-4 py-4 space-y-2 border-t-1">
+            <Link
+              to="/"
+              className="block hover:text-blue-600"
+              onClick={() => setMenuOpen(false)}
+            >
+              Home
+            </Link>
+            {token && (
+              <Link
+                to="/profile"
+                className="block hover:text-blue-600"
+                onClick={() => setMenuOpen(false)}
+              >
+                Profile
+              </Link>
+            )}
+            {!token ? (
+              <Link
+                to="/login"
+                onClick={() => setMenuOpen(false)}
+                className="block hover:text-blue-600"
+              >
+                Login
+              </Link>
+            ) : (
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  handleLogout();
+                }}
+                className="block text-left w-full hover:text-blue-600"
+              >
+                Logout
+              </button>
+            )}
+          </nav>
+        </div>
       )}
     </header>
   );

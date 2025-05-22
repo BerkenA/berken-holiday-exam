@@ -49,7 +49,7 @@ function Home() {
           to={`/venue/${booking.venue.id}`}
           className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition block"
         >
-          <h2 className="text-lg font-semibold mb-2">{booking.venue.name}</h2>
+          <h2 className="text-lg font-semibold mb-2">{truncateText(booking.venue.name, 20)}</h2>
           <img
             src={booking.venue?.media?.[0]?.url || "/No-Image-Placeholder.svg"}
             alt={booking.venue?.media?.[0]?.alt || "Venue image"}
@@ -75,7 +75,7 @@ function Home() {
             <strong>Guests:</strong> {booking.guests}
           </p>
           <p className="text-m text-blue-600">
-            {truncateText(booking.venue.description, 55)}
+            {truncateText(booking.venue.description, 35)}
           </p>
           <p className="text-xl">
             <strong>Price:</strong> {booking.venue.price}$
