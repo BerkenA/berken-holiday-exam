@@ -158,7 +158,7 @@ function Venue() {
         </ul>
       </div>
 
-      <DatePicker />
+      <DatePicker maxGuests={venue.maxGuests}/>
 
       {venue.owner && (
         <div className="mb-4">

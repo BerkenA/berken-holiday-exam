@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { DateRange } from "react-date-range";
 import { toast } from "react-toastify";
 import "react-date-range/dist/styles.css";
@@ -11,12 +11,11 @@ import { confirmAlert } from "react-confirm-alert";
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export default function DatePicker() {
+export default function DatePicker({ maxGuests }) {
   const token = AuthToken((state) => state.token);
   const user = AuthToken((state) => state.user);
   const [isVenueOwner, setIsVenueOwner] = useState(false);
   const { id: venueId } = useParams();
-  const location = useLocation();
   const [state, setState] = useState([
     {
       startDate: new Date(),
@@ -74,6 +73,23 @@ export default function DatePicker() {
 
   const handleDateChange = (item) => {
     setState([item.selection]);
+  };
+
+  const onGuestsChange = (e) => {
+    let val = Number(e.target.value);
+
+    if (!val || val < 1) {
+      toast.error("At least 1 guest is required.");
+      setGuests(1);
+      return;
+    }
+
+    if (maxGuests && val > maxGuests) {
+      toast.error(`Maximum guests allowed is ${maxGuests}`);
+      val = maxGuests;
+    }
+
+    setGuests(val);
   };
 
   const confirmBooking = () => {
@@ -167,13 +183,17 @@ export default function DatePicker() {
               type="number"
               min={1}
               value={guests}
-              onChange={(e) => setGuests(Number(e.target.value))}
+              onChange={onGuestsChange}
               className="border rounded px-2 py-1 w-20"
             />
             <button
               onClick={confirmBooking}
-              disabled={loading}
-              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+              disabled={loading || guests < 1 || guests > maxGuests}
+              className={`mt-4 px-4 py-2 rounded text-white ${
+                loading || guests < 1 || guests > maxGuests
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700 cursor-pointer"
+              }`}
             >
               {loading ? "Booking..." : "Book Now"}
             </button>
