@@ -5,11 +5,9 @@ import { toast } from "react-toastify";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
-const API_KEY = import.meta.env.VITE_API_KEY;
-const BEARER_TOKEN = import.meta.env.VITE_BEARER_TOKEN;
 
 function Home() {
-  const [bookings, setBookings] = useState([]);
+  const [venues, setVenues] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const limit = 24;
@@ -18,12 +16,10 @@ function Home() {
     const fetchBookings = async () => {
       try {
         const response = await fetch(
-          `${BASE_URL}/holidaze/bookings?_venue=true&limit=${limit}&offset=${(page - 1) * limit}`,
+          `${BASE_URL}/holidaze/venues?_owner=true&_bookings=true&limit=${limit}&page=${page}`,
           {
             headers: {
-              Authorization: `Bearer ${BEARER_TOKEN}`,
               "Content-Type": "application/json",
-              "X-Noroff-API-Key": API_KEY,
             },
           }
         );
@@ -33,10 +29,11 @@ function Home() {
         }
 
         const data = await response.json();
-        const newBookings = data.data;
-        setBookings((prev) => [...prev, ...newBookings]);
 
-        if (newBookings.length < limit) {
+        const newVenues = data.data || [];
+        setVenues((prev) => [...prev, ...newVenues]);
+
+        if (!data.meta.nextPage || data.meta.isLastPage) {
           setHasMore(false);
         }
       } catch (err) {
@@ -53,7 +50,7 @@ function Home() {
     <div>
       <InfiniteScroll
         className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        dataLength={bookings.length}
+        dataLength={venues.length}
         next={fetchNext}
         hasMore={hasMore}
         loader={<p className="text-center my-4">Loading more...</p>}
@@ -63,48 +60,58 @@ function Home() {
           </p>
         }
       >
-      {bookings.map((booking) => (
-        <Link
-          key={booking.id}
-          to={`/venue/${booking.venue.id}`}
-          className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition block"
-        >
-          <h2 className="text-lg font-semibold mb-2">
-            {truncateText(booking.venue.name, 20)}
-          </h2>
-          <img
-            src={booking.venue?.media?.[0]?.url || "/No-Image-Placeholder.svg"}
-            alt={booking.venue?.media?.[0]?.alt || "Venue image"}
-            className="w-full h-48 object-cover rounded-lg mb-2"
-          />
-          <p>
-            <strong>From:</strong>{" "}
-            {new Date(booking.dateFrom).toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </p>
-          <p>
-            <strong>To:</strong>{" "}
-            {new Date(booking.dateTo).toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </p>
-          <p>
-            <strong>Guests:</strong> {booking.guests}
-          </p>
-          <p className="text-m text-blue-600">
-            {truncateText(booking.venue.description, 35)}
-          </p>
-          <p className="text-xl">
-            <strong>Price:</strong> {booking.venue.price}$
-          </p>
-        </Link>
-      ))}
+        {venues.map((venue) => (
+          <Link
+            key={venue.id}
+            to={`/venue/${venue.id}`}
+            className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition block"
+          >
+            <h2 className="text-lg font-semibold mb-2">
+              {truncateText(venue.name, 20)}
+            </h2>
+            <img
+              src={venue?.media?.[0]?.url || "/No-Image-Placeholder.svg"}
+              alt={venue?.media?.[0]?.alt || "Venue image"}
+              className="w-full h-48 object-cover rounded-lg mb-2"
+            />
+            <p>
+              <strong>From:</strong>{" "}
+              {new Date(venue.dateFrom).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
+            <p>
+              <strong>To:</strong>{" "}
+              {new Date(venue.dateTo).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
+            <p>
+              <strong>Guests:</strong> {venue.guests}
+            </p>
+            <p className="text-m text-blue-600">
+              {truncateText(venue.description, 25)}
+            </p>
+            <p className="text-xl">
+              <strong>Price:</strong> {venue.price}$
+            </p>
+          </Link>
+        ))}
       </InfiniteScroll>
+      {!hasMore && (
+        <div className="flex justify-center my-8">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-800 transition cursor-pointer"
+          >
+            Back to Top
+          </button>
+        </div>
+      )}
     </div>
   );
 }
