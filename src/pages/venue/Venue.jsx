@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import AuthToken from "../../components/Authtoken";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
+import DatePicker from "../../components/DatePicker";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -14,6 +15,9 @@ function Venue() {
   const [loading, setLoading] = useState(true);
   const token = AuthToken((state) => state.token);
   const userEmail = AuthToken((state) => state.user?.email);
+  const location = useLocation();
+  const booking = location.state?.booking;
+  const holderImage = "/No-Image-Placeholder.svg";
 
   useEffect(() => {
     async function fetchVenue() {
@@ -46,14 +50,17 @@ function Venue() {
 
   async function onConfirmDelete() {
     try {
-      const response = await fetch(`${BASE_URL}/holidaze/venues/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          "X-Noroff-API-Key": API_KEY,
-        },
-      });
+      const response = await fetch(
+        `${BASE_URL}/holidaze/venues/${id}?_bookings=true`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            "X-Noroff-API-Key": API_KEY,
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to delete venue");
       }
@@ -105,13 +112,15 @@ function Venue() {
       </div>
       <h1 className="text-3xl font-bold mb-4">{venue.name}</h1>
 
-      {venue.media.length > 0 && (
-        <img
-          src={venue.media[0].url}
-          alt={venue.media[0].alt || "Venue image"}
-          className="w-full h-64 object-cover rounded-lg mb-4"
-        />
-      )}
+      <img
+        src={venue.media.length > 0 ? venue.media[0].url : holderImage}
+        alt={
+          venue.media.length > 0
+            ? venue.media[0].alt || "Venue image"
+            : "Holder image"
+        }
+        className="w-full h-64 object-cover rounded-lg mb-4"
+      />
 
       <p className="text-gray-700 mb-4">{venue.description}</p>
 
@@ -149,6 +158,10 @@ function Venue() {
         </ul>
       </div>
 
+      <div className="p-4 shadow-lg rounded-xl border border-gray-200 max-w-fit">
+        <DatePicker />
+      </div>
+
       {venue.owner && (
         <div className="mb-4">
           <h2 className="text-xl font-semibold">Hosted by</h2>
@@ -158,19 +171,52 @@ function Venue() {
         </div>
       )}
 
-      {venue.bookings && venue.bookings.length > 0 && (
-        <div>
-          <h2 className="text-xl font-semibold">Bookings</h2>
-          <ul className="list-disc list-inside">
+      {booking && (
+        <div className="booking-info p-4 bg-blue-100 border border-blue-400 rounded mt-4">
+          <h3 className="font-semibold text-lg mb-2">Your Booking Details</h3>
+          <p>
+            <strong>From:</strong>{" "}
+            {new Date(booking.dateFrom).toLocaleDateString()}
+          </p>
+          <p>
+            <strong>To:</strong> {new Date(booking.dateTo).toLocaleDateString()}
+          </p>
+          <p>
+            <strong>Guests:</strong> {booking.guests}
+          </p>
+        </div>
+      )}
+
+      {isVenueManager ? (
+        venue.bookings && venue.bookings.length > 0 ? (
+          <ul>
             {venue.bookings.map((booking) => (
-              <li key={booking.id}>
-                {booking.dateFrom} to {booking.dateTo} – Guests:{" "}
-                {booking.guests}
+              <li
+                key={booking.id}
+                className="mb-4 border-gray-200 p-4 rounded-2xl shadow-xl"
+              >
+                <p>
+                  <strong>Date from:</strong>{" "}
+                  {new Date(booking.dateFrom).toLocaleDateString()}
+                </p>
+                <p>
+                  <strong>Date to:</strong>{" "}
+                  {new Date(booking.dateTo).toLocaleDateString()}
+                </p>
+                <p>
+                  <strong>Guests:</strong> {booking.guests}
+                </p>
+                <p>
+                  <strong>Booked by:</strong>{" "}
+                  {booking.customer?.name || "Unknown"}
+                </p>
               </li>
             ))}
           </ul>
-        </div>
-      )}
+        ) : (
+          <p>No bookings for this venue yet.</p>
+        )
+      ) : null}
     </div>
   );
 }

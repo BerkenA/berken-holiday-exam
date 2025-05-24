@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import truncateText from "../components/TruncateText";
+import { toast } from "react-toastify";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -9,7 +10,6 @@ const BEARER_TOKEN = import.meta.env.VITE_BEARER_TOKEN;
 function Home() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -29,7 +29,7 @@ function Home() {
         const data = await response.json();
         setBookings(data.data);
       } catch (err) {
-        setError(err.message);
+        toast.error(err.message);
       } finally {
         setLoading(false);
       }
@@ -39,7 +39,6 @@ function Home() {
   }, []);
 
   if (loading) return <p>Loading bookings...</p>;
-  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
