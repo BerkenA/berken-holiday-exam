@@ -29,9 +29,13 @@ function Home() {
         }
 
         const data = await response.json();
-
         const newVenues = data.data || [];
-        setVenues((prev) => [...prev, ...newVenues]);
+        setVenues((prev) => {
+          const combined = [...prev, ...newVenues];
+          const uniqueMap = new Map();
+          combined.forEach((venue) => uniqueMap.set(venue.id, venue));
+          return Array.from(uniqueMap.values());
+        });
 
         if (!data.meta.nextPage || data.meta.isLastPage) {
           setHasMore(false);
@@ -64,7 +68,7 @@ function Home() {
           <Link
             key={venue.id}
             to={`/venue/${venue.id}`}
-            className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition block"
+            className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition flex flex-col gap-1"
           >
             <h2 className="text-lg font-semibold mb-2">
               {truncateText(venue.name, 20)}
@@ -75,29 +79,13 @@ function Home() {
               className="w-full h-48 object-cover rounded-lg mb-2"
             />
             <p>
-              <strong>From:</strong>{" "}
-              {new Date(venue.dateFrom).toLocaleDateString("en-GB", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </p>
-            <p>
-              <strong>To:</strong>{" "}
-              {new Date(venue.dateTo).toLocaleDateString("en-GB", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </p>
-            <p>
-              <strong>Guests:</strong> {venue.guests}
+              <strong> Max guests:</strong> {venue.maxGuests}
             </p>
             <p className="text-m text-blue-600">
               {truncateText(venue.description, 25)}
             </p>
-            <p className="text-xl">
-              <strong>Price:</strong> {venue.price}$
+            <p className="text-xl text-green-700">
+              <strong className="text-black">Price:</strong> {venue.price}$
             </p>
           </Link>
         ))}

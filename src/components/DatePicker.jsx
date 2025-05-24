@@ -37,6 +37,8 @@ export default function DatePicker({ maxGuests }) {
           `${BASE_URL}/holidaze/venues/${venueId}?_bookings=true&_owner=true`,
           {
             headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
               "X-Noroff-API-Key": API_KEY,
             },
           }
@@ -69,7 +71,7 @@ export default function DatePicker({ maxGuests }) {
     };
 
     fetchBookings();
-  }, [venueId, user?.name]);
+  }, [venueId, user?.name, token]);
 
   const handleDateChange = (item) => {
     setState([item.selection]);
@@ -187,7 +189,13 @@ export default function DatePicker({ maxGuests }) {
               className="border rounded px-2 py-1 w-20"
             />
             <button
-              onClick={confirmBooking}
+              onClick={() => {
+                if (!token) {
+                  toast.info("Please log in to book this venue.");
+                  return;
+                }
+                confirmBooking();
+              }}
               disabled={loading || guests < 1 || guests > maxGuests}
               className={`mt-4 px-4 py-2 rounded text-white ${
                 loading || guests < 1 || guests > maxGuests
