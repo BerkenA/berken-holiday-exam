@@ -158,9 +158,7 @@ function Venue() {
         </ul>
       </div>
 
-      <div className="p-4 shadow-lg rounded-xl border border-gray-200 max-w-fit">
-        <DatePicker />
-      </div>
+      <DatePicker />
 
       {venue.owner && (
         <div className="mb-4">
@@ -196,6 +194,10 @@ function Venue() {
                 className="mb-4 border-gray-200 p-4 rounded-2xl shadow-xl"
               >
                 <p>
+                  <strong>Booked by:</strong>{" "}
+                  {booking.customer?.name || "Unknown"}
+                </p>
+                <p>
                   <strong>Date from:</strong>{" "}
                   {new Date(booking.dateFrom).toLocaleDateString()}
                 </p>
@@ -205,10 +207,6 @@ function Venue() {
                 </p>
                 <p>
                   <strong>Guests:</strong> {booking.guests}
-                </p>
-                <p>
-                  <strong>Booked by:</strong>{" "}
-                  {booking.customer?.name || "Unknown"}
                 </p>
               </li>
             ))}

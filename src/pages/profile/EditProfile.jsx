@@ -63,7 +63,7 @@ function EditProfile() {
       }
 
       toast.success("Profile updated successfully!");
-      setTimeout(() => navigate("/profile"), 1500);
+      setTimeout(() => navigate("/profile"), 1000);
     } catch (err) {
       toast.error(err.message);
     }
@@ -167,6 +167,16 @@ function EditProfile() {
           />
           I am a venue manager
         </label>
+
+        {user?.venueManager && !venueManager && (
+          <div className="mt-2 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded">
+            <p className="font-semibold">⚠️ CAUTION!</p>
+            <p>
+              If you already are a venue manager and remove it,{" "}
+              <strong>YOU CAN'T EDIT OR DELETE YOUR VENUES</strong>.
+            </p>
+          </div>
+        )}
 
         <div className="flex gap-4">
           <button
