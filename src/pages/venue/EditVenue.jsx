@@ -7,7 +7,7 @@ import HandleDiscard from "../../components/handleDiscard";
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export default function EditVenue() {
+function EditVenue() {
   const { id } = useParams();
   const navigate = useNavigate();
   const token = AuthToken((state) => state.token);
@@ -282,3 +282,5 @@ export default function EditVenue() {
     </div>
   );
 }
+
+export default EditVenue;

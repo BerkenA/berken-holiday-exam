@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { DateRange } from "react-date-range";
 import { toast } from "react-toastify";
 import "react-date-range/dist/styles.css";
@@ -11,9 +11,10 @@ import { confirmAlert } from "react-confirm-alert";
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export default function DatePicker({ maxGuests }) {
+function DatePicker({ maxGuests, bookingToEdit = null }) {
   const token = AuthToken((state) => state.token);
   const user = AuthToken((state) => state.user);
+  const navigate = useNavigate();
   const [isVenueOwner, setIsVenueOwner] = useState(false);
   const { id: venueId } = useParams();
   const [state, setState] = useState([
@@ -113,8 +114,21 @@ export default function DatePicker({ maxGuests }) {
     });
   };
 
+  useEffect(() => {
+    if (bookingToEdit) {
+      setState([
+        {
+          startDate: new Date(bookingToEdit.dateFrom),
+          endDate: new Date(bookingToEdit.dateTo),
+          key: "selection",
+        },
+      ]);
+      setGuests(bookingToEdit.guests || 1);
+    }
+  }, [bookingToEdit]);
+
   const handleBooking = async () => {
-    if (!venueId) {
+    if (!venueId && !bookingToEdit) {
       toast.error("Venue ID is missing");
       return;
     }
@@ -123,23 +137,35 @@ export default function DatePicker({ maxGuests }) {
     const dateTo = formatDate(state[0].endDate);
 
     setLoading(true);
-    const loadingToast = toast.loading("Creating your booking...");
+    const loadingToast = toast.loading(
+      bookingToEdit ? "Updating your booking..." : "Creating your booking..."
+    );
+
+    const requestBody = {
+      dateFrom,
+      dateTo,
+      guests,
+    };
+
+    if (!bookingToEdit) {
+      requestBody.venueId = venueId;
+    }
 
     try {
-      const res = await fetch(`${BASE_URL}/holidaze/bookings`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "X-Noroff-API-Key": API_KEY,
-        },
-        body: JSON.stringify({
-          dateFrom,
-          dateTo,
-          guests,
-          venueId,
-        }),
-      });
+      const res = await fetch(
+        `${BASE_URL}/holidaze/bookings${
+          bookingToEdit ? `/${bookingToEdit.id}` : ""
+        }`,
+        {
+          method: bookingToEdit ? "PUT" : "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "X-Noroff-API-Key": API_KEY,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -147,11 +173,14 @@ export default function DatePicker({ maxGuests }) {
       }
 
       toast.update(loadingToast, {
-        render: "Booking successful!",
+        render: bookingToEdit ? "Booking updated!" : "Booking successful!",
         type: "success",
         isLoading: false,
         autoClose: 3000,
       });
+      if (bookingToEdit) {
+        navigate("/profile");
+      }
     } catch (err) {
       toast.update(loadingToast, {
         render: err.message || "Something went wrong",
@@ -209,3 +238,5 @@ export default function DatePicker({ maxGuests }) {
     </>
   );
 }
+
+export default DatePicker;

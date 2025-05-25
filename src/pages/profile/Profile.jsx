@@ -92,14 +92,31 @@ function Profile() {
         <p className="text-gray-600">{profile.bio}</p>
 
         {profile.venueManager && (
-          <p className="text-l text-green-600 mt-2">Venue Manager</p>
+          <p className="text-xl text-green-600 mt-2">Venue Manager</p>
         )}
         <div className="flex justify-center gap-4">
           <button className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer mt-4 hover:bg-blue-800">
             <Link to="/edit-profile">Edit profile</Link>
           </button>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer mt-4 hover:bg-blue-800">
-            <Link to="/CreateVenue">Create Venue</Link>
+          <button
+            onClick={(e) => {
+              if (!profile.venueManager) {
+                e.preventDefault();
+                toast.info("You have to be a venue manager to create a venue");
+              }
+            }}
+            className={`px-4 py-2 rounded mt-4 text-white transition ${
+              profile.venueManager
+                ? "bg-blue-600 hover:bg-blue-800 cursor-pointer"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
+          >
+            <Link
+              to="/CreateVenue"
+              onClick={(e) => !profile.venueManager && e.preventDefault()}
+            >
+              Create Venue
+            </Link>
           </button>
         </div>
         <div className="flex gap-8 flex-wrap flex-col md:flex-row mt-6">

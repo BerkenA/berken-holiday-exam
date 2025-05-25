@@ -4,7 +4,6 @@ import AuthToken from "../../components/Authtoken";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
 import DatePicker from "../../components/DatePicker";
-import truncateText from "../../components/TruncateText";
 import FormateDate from "../../components/FormateDate";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -79,7 +78,8 @@ function Venue() {
   function handleDelete() {
     confirmAlert({
       title: "Confirm to delete",
-      message: "Are you sure you want to delete this venue? this will cancel all bookings on this venue",
+      message:
+        "Are you sure you want to delete this venue? this will cancel all bookings on this venue",
       buttons: [
         {
           label: "Yes",
@@ -164,9 +164,7 @@ function Venue() {
           </>
         )}
       </div>
-      <h1 className="text-3xl font-bold mb-4">
-        {truncateText(venue.name, 16)}
-      </h1>
+      <h1 className="text-3xl font-bold mb-4 break-words">{venue.name}</h1>
 
       <img
         src={venue.media.length > 0 ? venue.media[0].url : holderImage}
@@ -284,13 +282,11 @@ function Venue() {
         <div className="mt-4 flex gap-4">
           <button
             onClick={() =>
-              navigate(`/edit-booking/${booking.id}`, {
-                state: { booking },
-              })
+              setEditBooking(editBooking?.id === booking.id ? null : booking)
             }
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"
           >
-            Edit Booking
+            {editBooking?.id === booking.id ? "Cancel Edit" : "Edit Booking"}
           </button>
           <button
             onClick={() => handleDeleteConfirm(booking.id)}
@@ -299,6 +295,20 @@ function Venue() {
             Delete Booking
           </button>
         </div>
+      )}
+      {editBooking?.id === booking.id && (
+        <DatePicker
+          maxGuests={venue.maxGuests}
+          bookingToEdit={editBooking}
+          onBookingUpdated={(updatedBooking) => {
+            setBookings((prev) =>
+              prev.map((b) => (b.id === updatedBooking.id ? updatedBooking : b))
+            );
+            toast.success("Booking updated successfully");
+            setEditBooking(null);
+          }}
+          onCancelEdit={() => setEditBooking(null)}
+        />
       )}
     </div>
   );

@@ -7,7 +7,7 @@ import HandleDiscard from "../../components/handleDiscard";
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export default function CreateVenue() {
+function CreateVenue() {
   const token = AuthToken((state) => state.token);
   const handleDiscard = HandleDiscard();
   const [formData, setFormData] = useState({
@@ -151,7 +151,6 @@ export default function CreateVenue() {
           Create a New Venue
         </h1>
 
-        {/* Name */}
         <label className="block">
           Name <span className="text-red-600">*</span>
           <input
@@ -164,7 +163,6 @@ export default function CreateVenue() {
           />
         </label>
 
-        {/* Description */}
         <label className="block">
           Description <span className="text-red-600">*</span>
           <textarea
@@ -177,7 +175,6 @@ export default function CreateVenue() {
           />
         </label>
 
-        {/* Media */}
         <label className="block">
           Media URL:
           <input
@@ -218,7 +215,6 @@ export default function CreateVenue() {
           />
         </label>
 
-        {/* Price */}
         <label className="block">
           Price <span className="text-red-600">*</span>
           <input
@@ -232,7 +228,6 @@ export default function CreateVenue() {
           />
         </label>
 
-        {/* Max Guests */}
         <label className="block">
           Max Guests <span className="text-red-600">*</span>
           <input
@@ -246,7 +241,6 @@ export default function CreateVenue() {
           />
         </label>
 
-        {/* Rating */}
         <label className="block">
           Rating:
           <input
@@ -260,7 +254,6 @@ export default function CreateVenue() {
           />
         </label>
 
-        {/* Meta */}
         <fieldset className="border p-4 rounded">
           <legend className="font-semibold mb-2">Amenities</legend>
           <div className="flex flex-wrap gap-4">
@@ -278,7 +271,6 @@ export default function CreateVenue() {
           </div>
         </fieldset>
 
-        {/* Location */}
         <fieldset className="border p-4 rounded space-y-2">
           <legend className="font-semibold mb-2">Location</legend>
           {["address", "city", "zip", "country", "continent"].map((field) => (
@@ -319,7 +311,6 @@ export default function CreateVenue() {
           </label>
         </fieldset>
 
-        {/* Submit Button */}
         <div className="flex gap-4">
           <button
             type="submit"
@@ -340,3 +331,5 @@ export default function CreateVenue() {
     </div>
   );
 }
+
+export default CreateVenue;

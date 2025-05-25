@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import AuthToken from "./Authtoken";
 import { toast } from "react-toastify";
 
-export default function Navbar() {
+function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const wrapperRef = useRef(null);
 
@@ -131,3 +131,5 @@ export default function Navbar() {
     </header>
   );
 }
+
+export default Navbar;
