@@ -31,7 +31,7 @@ function Home() {
     breakfast: false,
     pets: false,
   });
-  const limit = 24;
+  const limit = 12;
 
   useEffect(() => {
     setVenues([]);
@@ -200,8 +200,12 @@ function Home() {
               <img
                 src={venue?.media?.[0]?.url || "/No-Image-Placeholder.svg"}
                 alt={venue?.media?.[0]?.alt || "Venue image"}
+                loading="lazy"
+                width="300"
+                height="200"
                 className="w-full h-48 object-cover rounded-lg mb-2"
               />
+
               <p>
                 <strong> Max guests:</strong> {venue.maxGuests}
               </p>
