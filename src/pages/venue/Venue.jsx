@@ -5,6 +5,7 @@ import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
 import DatePicker from "../../components/DatePicker";
 import FormateDate from "../../components/FormateDate";
+import { Star } from "lucide-react";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -185,8 +186,9 @@ function Venue() {
         <p>
           <strong>Max Guests:</strong> {venue.maxGuests}
         </p>
-        <p>
+        <p className="flex gap-1 items-center">
           <strong>Rating:</strong> {venue.rating}
+          <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
         </p>
       </div>
 

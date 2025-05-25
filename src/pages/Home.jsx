@@ -12,6 +12,7 @@ import {
   UtensilsCrossed,
   Fish,
   FishOff,
+  Star,
 } from "lucide-react";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -156,7 +157,6 @@ function Home() {
       </div>
       <InfiniteScroll
         className="p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-
         dataLength={venues.length}
         next={fetchNext}
         hasMore={hasMore}
@@ -194,7 +194,10 @@ function Home() {
               <p className="text-green-700">
                 <strong className="text-black">Price:</strong> {venue.price}$
               </p>
-              <p className="text-m">{venue.rating}</p>
+              <p className="text-m flex items-center gap-1">
+                {venue.rating}
+                <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+              </p>
             </div>
             <div className="flex gap-2 mt-2 text-gray-700">
               {venue.meta?.wifi ? (

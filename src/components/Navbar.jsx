@@ -49,7 +49,7 @@ function Navbar() {
           </Link>
         </div>
 
-        <div className="flex-1 flex justify-center">
+        <div className="flex-1 hidden sm:flex justify-center">
           <div className="w-full max-w-md">
             <SearchBar />
           </div>
@@ -99,6 +99,9 @@ function Navbar() {
           className="sm:hidden absolute top-16 left-0 w-full z-50"
         >
           <nav className="bg-white shadow-md px-4 py-4 space-y-2 border-t-1">
+            <div className="mb-4 block sm:hidden">
+              <SearchBar />
+            </div>
             <Link
               to="/"
               className="block hover:text-blue-600"

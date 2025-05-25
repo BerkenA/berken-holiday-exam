@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Star } from "lucide-react";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -45,7 +46,7 @@ function SearchBar() {
       <input
         type="text"
         placeholder="Search venues..."
-        className="p-2 w-full"
+        className="p-2 w-full rounded"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => venues.length > 0 && setShowDropdown(true)}
@@ -54,7 +55,7 @@ function SearchBar() {
 
       {showDropdown && (
         <div
-          className="absolute left-0 w-full bg-gray-50 shadow-md rounded max-h-80 overflow-y-auto border-r-2 border-l-2"
+          className="absolute left-0 w-full bg-gray-50 shadow-md rounded max-h-80 overflow-y-auto"
           style={{ top: "calc(100% + 3px)" }}
         >
           {loading && <p className="p-2">Loading...</p>}
@@ -91,7 +92,10 @@ function SearchBar() {
                         <strong className="text-black">Price:</strong>{" "}
                         {venue.price}$
                       </p>
-                      <p className="text-m">{venue.rating}</p>
+                      <p className="text-m flex items-center gap-1">
+                        {venue.rating}
+                        <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                      </p>
                     </div>
                   </Link>
                 </li>
