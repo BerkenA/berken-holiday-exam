@@ -296,7 +296,7 @@ function Venue() {
           </button>
         </div>
       )}
-      {editBooking?.id === booking.id && (
+      {editBooking && booking && editBooking.id === booking.id && (
         <DatePicker
           maxGuests={venue.maxGuests}
           bookingToEdit={editBooking}
@@ -306,6 +306,7 @@ function Venue() {
             );
             toast.success("Booking updated successfully");
             setEditBooking(null);
+            navigate("/profile");
           }}
           onCancelEdit={() => setEditBooking(null)}
         />

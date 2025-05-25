@@ -13,6 +13,7 @@ import CreateVenue from "./pages/venue/CreateVenue";
 import ScrollToTop from "./components/ScrollToTop";
 import EditVenue from "./pages/venue/EditVenue";
 import NotFound from "./pages/NotFound"
+import SearchBar from "./components/SearchBar";
 
 const AppRoutes = () => {
   return (
@@ -32,6 +33,7 @@ const AppRoutes = () => {
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Contact" element={<Contact />} />
+          <Route path="/search" element={<SearchBar />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

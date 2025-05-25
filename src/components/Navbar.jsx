@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import AuthToken from "./Authtoken";
 import { toast } from "react-toastify";
+import SearchBar from "./SearchBar";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -42,28 +43,36 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white shadow-xl">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-blue-600">
-          Holidaze
-        </Link>
+        <div className="flex-1 flex items-center">
+          <Link to="/" className="text-2xl font-bold text-blue-600">
+            Holidaze
+          </Link>
+        </div>
+
+        <div className="flex-1 flex justify-center">
+          <div className="w-full max-w-md">
+            <SearchBar />
+          </div>
+        </div>
 
         {/* Desktop Menu */}
-        <nav className="space-x-4 hidden sm:flex items-center">
-          <Link to="/" className="hover:text-blue-600 text-l">
+        <nav className="flex-1 flex justify-end space-x-6 items-center">
+          <Link to="/" className="hover:text-blue-600 text-lg">
             Home
           </Link>
           {token && (
-            <Link to="/profile" className="hover:text-blue-600">
+            <Link to="/profile" className="hover:text-blue-600 text-lg">
               Profile
             </Link>
           )}
           {!token ? (
-            <Link to="/login" className="hover:text-blue-600 text-l">
+            <Link to="/login" className="hover:text-blue-600 text-lg">
               Login
             </Link>
           ) : (
             <button
               onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer text-l"
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer text-lg"
             >
               Logout
             </button>
