@@ -4,19 +4,23 @@ import AuthToken from "../../components/Authtoken";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
 import DatePicker from "../../components/DatePicker";
+import truncateText from "../../components/TruncateText";
+import FormateDate from "../../components/FormateDate";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 function Venue() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [bookings, setBookings] = useState([]);
+  const [editBooking, setEditBooking] = useState(null);
   const token = AuthToken((state) => state.token);
   const userEmail = AuthToken((state) => state.user?.email);
+  const navigate = useNavigate();
   const location = useLocation();
-  const booking = location.state?.booking;
+  const booking = location.state?.booking || null;
   const holderImage = "/No-Image-Placeholder.svg";
 
   useEffect(() => {
@@ -30,6 +34,7 @@ function Venue() {
         }
         const result = await response.json();
         setVenue(result.data);
+        setBookings(result.data.bookings || []);
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -41,7 +46,7 @@ function Venue() {
   }, [id]);
 
   if (loading) return <p>Loading venue...</p>;
-  if (!venue) return <p>No venue found.</p>;
+  if (!venue) return toast.info("No venue found");
 
   const isVenueManager =
     token &&
@@ -74,13 +79,62 @@ function Venue() {
   function handleDelete() {
     confirmAlert({
       title: "Confirm to delete",
-      message: "Are you sure you want to delete this venue?",
+      message: "Are you sure you want to delete this venue? this will cancel all bookings on this venue",
       buttons: [
         {
           label: "Yes",
           onClick: () => {
             onConfirmDelete();
           },
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
+  }
+
+  async function deleteBooking(bookingId) {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/holidaze/bookings/${bookingId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-Noroff-API-Key": API_KEY,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete booking");
+      }
+
+      setBookings((prev) => prev.filter((b) => b.id !== bookingId));
+      toast.success("Booking deleted successfully");
+      navigate("/profile");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+
+  function handleDeleteConfirm(bookingId) {
+    const bookingToDelete = bookings.find((b) => b.id === bookingId);
+    confirmAlert({
+      title: "Confirm delete booking",
+      message: (
+        <div>
+          Are you sure you want to delete this booking from{" "}
+          <FormateDate date={bookingToDelete?.dateFrom} /> to{" "}
+          <FormateDate date={bookingToDelete?.dateTo} />?
+        </div>
+      ),
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => deleteBooking(bookingId),
         },
         {
           label: "No",
@@ -110,7 +164,9 @@ function Venue() {
           </>
         )}
       </div>
-      <h1 className="text-3xl font-bold mb-4">{venue.name}</h1>
+      <h1 className="text-3xl font-bold mb-4">
+        {truncateText(venue.name, 16)}
+      </h1>
 
       <img
         src={venue.media.length > 0 ? venue.media[0].url : holderImage}
@@ -158,7 +214,17 @@ function Venue() {
         </ul>
       </div>
 
-      <DatePicker maxGuests={venue.maxGuests}/>
+      <DatePicker
+        maxGuests={venue.maxGuests}
+        editingBooking={editBooking}
+        onBookingUpdated={(updatedBooking) => {
+          setBookings((prev) =>
+            prev.map((b) => (b.id === updatedBooking.id ? updatedBooking : b))
+          );
+          setEditBooking(null);
+        }}
+        onCancelEdit={() => setEditBooking(null)}
+      />
 
       {venue.owner && (
         <div className="mb-4">
@@ -173,11 +239,10 @@ function Venue() {
         <div className="booking-info p-4 bg-blue-100 border border-blue-400 rounded mt-4">
           <h3 className="font-semibold text-lg mb-2">Your Booking Details</h3>
           <p>
-            <strong>From:</strong>{" "}
-            {new Date(booking.dateFrom).toLocaleDateString()}
+            <strong>From:</strong> <FormateDate date={booking.dateFrom} />
           </p>
           <p>
-            <strong>To:</strong> {new Date(booking.dateTo).toLocaleDateString()}
+            <strong>To:</strong> <FormateDate date={booking.dateTo} />
           </p>
           <p>
             <strong>Guests:</strong> {booking.guests}
@@ -199,11 +264,11 @@ function Venue() {
                 </p>
                 <p>
                   <strong>Date from:</strong>{" "}
-                  {new Date(booking.dateFrom).toLocaleDateString()}
+                  <FormateDate date={booking.dateFrom} />
                 </p>
                 <p>
                   <strong>Date to:</strong>{" "}
-                  {new Date(booking.dateTo).toLocaleDateString()}
+                  <FormateDate date={booking.dateTo} />
                 </p>
                 <p>
                   <strong>Guests:</strong> {booking.guests}
@@ -215,6 +280,26 @@ function Venue() {
           <p>No bookings for this venue yet.</p>
         )
       ) : null}
+      {booking && (
+        <div className="mt-4 flex gap-4">
+          <button
+            onClick={() =>
+              navigate(`/edit-booking/${booking.id}`, {
+                state: { booking },
+              })
+            }
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"
+          >
+            Edit Booking
+          </button>
+          <button
+            onClick={() => handleDeleteConfirm(booking.id)}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 cursor-pointer"
+          >
+            Delete Booking
+          </button>
+        </div>
+      )}
     </div>
   );
 }

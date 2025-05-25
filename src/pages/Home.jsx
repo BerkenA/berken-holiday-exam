@@ -53,7 +53,7 @@ function Home() {
   return (
     <div>
       <InfiniteScroll
-        className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
         dataLength={venues.length}
         next={fetchNext}
         hasMore={hasMore}
@@ -82,9 +82,9 @@ function Home() {
               <strong> Max guests:</strong> {venue.maxGuests}
             </p>
             <p className="text-m text-blue-600">
-              {truncateText(venue.description, 25)}
+              {truncateText(venue.description, 20)}
             </p>
-            <p className="text-xl text-green-700">
+            <p className="text-green-700">
               <strong className="text-black">Price:</strong> {venue.price}$
             </p>
           </Link>

@@ -3,6 +3,7 @@ import AuthToken from "../../components/Authtoken";
 import { Link } from "react-router-dom";
 import truncateText from "../../components/TruncateText";
 import { toast } from "react-toastify";
+import FormateDate from "../../components/FormateDate";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -144,7 +145,9 @@ function Profile() {
               bookings.length === 0 ? "text-center" : "text-left"
             }`}
           >
-            <h2 className="text-xl font-semibold mb-6">Your Bookings</h2>
+            <h2 className="text-xl font-semibold mb-6 text-center">
+              Your Bookings
+            </h2>
             <div className="flex flex-col gap-4">
               {bookings.length ? (
                 bookings.map((booking) => (
@@ -167,19 +170,10 @@ function Profile() {
                     />
                     <p>
                       <strong>From:</strong>{" "}
-                      {new Date(booking.dateFrom).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
+                      <FormateDate date={booking.dateFrom} />
                     </p>
                     <p>
-                      <strong>To:</strong>{" "}
-                      {new Date(booking.dateTo).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
+                      <strong>To:</strong> <FormateDate date={booking.dateTo} />
                     </p>
                     <p>
                       <strong>Guests:</strong> {booking.guests}

@@ -141,8 +141,6 @@ export default function DatePicker({ maxGuests }) {
         }),
       });
 
-      console.log("Fetched bookings:", res);
-
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || "Booking failed.");
@@ -169,7 +167,7 @@ export default function DatePicker({ maxGuests }) {
   return (
     <>
       {!isVenueOwner && (
-        <div className="max-w-fit p-4 rounded-lg shadow">
+        <div className="max-w-fit  rounded-lg shadow">
           <DateRange
             onChange={handleDateChange}
             ranges={state}
