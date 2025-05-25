@@ -11,7 +11,7 @@ import { confirmAlert } from "react-confirm-alert";
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-function DatePicker({ maxGuests, bookingToEdit = null }) {
+function DatePicker({ maxGuests, bookingToEdit = null, price }) {
   const token = AuthToken((state) => state.token);
   const user = AuthToken((state) => state.user);
   const navigate = useNavigate();
@@ -29,7 +29,12 @@ function DatePicker({ maxGuests, bookingToEdit = null }) {
   const [guests, setGuests] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const formatDate = (date) => date.toISOString().split("T")[0];
+  const formatDate = (date) => {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); 
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -95,24 +100,48 @@ function DatePicker({ maxGuests, bookingToEdit = null }) {
     setGuests(val);
   };
 
-  const confirmBooking = () => {
-    confirmAlert({
-      title: "Confirm Booking",
-      message: `Do you want to book from ${formatDate(
-        state[0].startDate
-      )} to ${formatDate(state[0].endDate)} for ${guests} guest(s)?`,
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => handleBooking(),
-        },
-        {
-          label: "No",
-          onClick: () => {},
-        },
-      ],
-    });
-  };
+const confirmBooking = () => {
+  const startDate = state[0].startDate;
+  const endDate = state[0].endDate;
+
+  const timeDiff = endDate.getTime() - startDate.getTime();
+  const nights = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24) +1));
+  const totalCost = nights * price;
+
+  confirmAlert({
+    title: "Confirm Booking",
+    message: (
+      <div style={{ lineHeight: "1.6" }}>
+        <strong>Booking details:</strong>
+        <br />
+        From: {formatDate(startDate)}
+        <br />
+        To: {formatDate(endDate)}
+        <br />
+        Nights: {nights}
+        <br />
+        Guests: {guests}
+        <br />
+        Max allowed: {maxGuests}
+        <br />
+        Price per night: ${price}
+        <br />
+        <br />
+        <strong>Total cost: ${totalCost}</strong>
+      </div>
+    ),
+    buttons: [
+      {
+        label: "Yes",
+        onClick: () => handleBooking(),
+      },
+      {
+        label: "No",
+      },
+    ],
+  });
+};
+
 
   useEffect(() => {
     if (bookingToEdit) {

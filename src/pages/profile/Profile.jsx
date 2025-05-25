@@ -102,7 +102,9 @@ function Profile() {
             onClick={(e) => {
               if (!profile.venueManager) {
                 e.preventDefault();
-                toast.info("You have to be a venue manager to create a venue, you can do that in edit profile");
+                toast.info(
+                  "You have to be a venue manager to create a venue, you can do that in edit profile"
+                );
               }
             }}
             className={`px-4 py-2 rounded mt-4 text-white transition ${
@@ -143,6 +145,9 @@ function Profile() {
                       className="w-full h-48 object-cover rounded-lg mb-2"
                     />
                     <p className="mb-1">{venue.location?.city}</p>
+                    <p>
+                      <strong>Guests</strong> {venue.maxGuests}
+                    </p>
                     <p className="text-sm text-gray-600 truncate">
                       {venue.description}
                     </p>

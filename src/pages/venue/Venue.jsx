@@ -217,6 +217,7 @@ function Venue() {
       <DatePicker
         maxGuests={venue.maxGuests}
         editingBooking={editBooking}
+        price={venue.price} 
         onBookingUpdated={(updatedBooking) => {
           setBookings((prev) =>
             prev.map((b) => (b.id === updatedBooking.id ? updatedBooking : b))
