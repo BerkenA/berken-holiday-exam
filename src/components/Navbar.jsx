@@ -56,7 +56,7 @@ function Navbar() {
         </div>
 
         {/* Desktop Menu */}
-        <nav className="flex-1 flex justify-end space-x-6 items-center">
+        <nav className="flex-1 justify-end space-x-6 items-center hidden sm:flex">
           <Link to="/" className="hover:text-blue-600 text-lg">
             Home
           </Link>

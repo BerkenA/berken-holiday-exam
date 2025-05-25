@@ -102,7 +102,7 @@ function Profile() {
             onClick={(e) => {
               if (!profile.venueManager) {
                 e.preventDefault();
-                toast.info("You have to be a venue manager to create a venue");
+                toast.info("You have to be a venue manager to create a venue, you can do that in edit profile");
               }
             }}
             className={`px-4 py-2 rounded mt-4 text-white transition ${

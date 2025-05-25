@@ -86,17 +86,20 @@ function SearchBar() {
                     <p className="text-sm text-gray-700 line-clamp-2 break-words">
                       {venue.description}
                     </p>
-                    <p className="text-green-700">
-                      <strong className="text-black">Price:</strong>{" "}
-                      {venue.price}$
-                    </p>
+                    <div className="flex justify-between">
+                      <p className="text-green-700">
+                        <strong className="text-black">Price:</strong>{" "}
+                        {venue.price}$
+                      </p>
+                      <p className="text-m">{venue.rating}</p>
+                    </div>
                   </Link>
                 </li>
               ))}
             </ul>
           )}
         </div>
-        )}
+      )}
     </div>
   );
 }
