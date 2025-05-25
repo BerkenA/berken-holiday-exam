@@ -152,12 +152,14 @@ function Venue() {
           <>
             <button
               onClick={() => navigate(`/venue/edit/${id}`)}
+              aria-label="Edit this venue"
               className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-800"
             >
               Edit
             </button>
             <button
               onClick={handleDelete}
+              aria-label="Delete this venue"
               className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-800"
             >
               Delete
@@ -288,11 +290,13 @@ function Venue() {
               setEditBooking(editBooking?.id === booking.id ? null : booking)
             }
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"
+            aria-label="Edit booking"
           >
             {editBooking?.id === booking.id ? "Cancel Edit" : "Edit Booking"}
           </button>
           <button
             onClick={() => handleDeleteConfirm(booking.id)}
+            aria-label="Delete booking"
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 cursor-pointer"
           >
             Delete Booking

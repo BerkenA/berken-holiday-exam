@@ -70,6 +70,7 @@ function SearchBar() {
                 <li key={venue.id} className="border-b p-0">
                   <Link
                     to={`/Venue/${venue.id}`}
+                    aria-label="Go to venue"
                     className="block p-3 hover:bg-gray-100 cursor-pointer"
                     onClick={() => setShowDropdown(false)}
                   >

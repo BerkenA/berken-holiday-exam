@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import truncateText from "../components/TruncateText";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
   Wifi,
@@ -109,148 +110,169 @@ function Home() {
   };
 
   return (
-    <div>
-      <div className="p-4 bg-white shadow rounded mb-6">
-        <h3 className="font-bold mb-2 text-blue-600">Filter Venues</h3>
+    <>
+      <Helmet>
+        <title>Home | Holidaze</title>
+        <meta
+          name="description"
+          content="Discover and book unique holiday venues with Holidaze. Find your perfect vacation spot, compare prices, and enjoy your getaway!"
+        />
+        <meta
+          name="keywords"
+          content="holidaze, holiday booking, vacation rentals, travel, unique venues, accommodation, hotels, booking platform"
+        />
+        <meta name="author" content="Berken Ates" />
+      </Helmet>
 
-        <div className="flex flex-wrap gap-4">
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="border p-2 rounded cursor-pointer"
-          >
-            <option value="">Sort by</option>
-            <option value="price">Price</option>
-            <option value="rating">Rating</option>
-          </select>
+      <div>
+        <div className="p-4 bg-white shadow rounded mb-6">
+          <h3 className="font-bold mb-2 text-blue-600">Filter Venues</h3>
 
-          <select
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-            className="border p-2 rounded cursor-pointer"
-          >
-            <option value="desc">Descending</option>
-            <option value="asc">Ascending</option>
-          </select>
-
-          {["wifi", "pets", "parking", "breakfast"].map((key) => (
-            <label
-              key={key}
-              className="flex items-center gap-2 border px-3 py-1 rounded shadow-sm cursor-pointer"
+          <div className="flex flex-wrap gap-4">
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="border p-2 rounded cursor-pointer"
             >
-              <input
-                type="checkbox"
-                checked={filters[key]}
-                onChange={(e) =>
-                  setFilters({ ...filters, [key]: e.target.checked })
-                }
-                className="w-5 h-5 cursor-pointer"
-              />
+              <option value="">Sort by</option>
+              <option value="price">Price</option>
+              <option value="rating">Rating</option>
+            </select>
 
-              <span className="flex items-center gap-1">
-                {featureIcons[key]}
-                <span className="capitalize">{key}</span>
-              </span>
-            </label>
-          ))}
-        </div>
-      </div>
-      <InfiniteScroll
-        className="p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-        dataLength={venues.length}
-        next={fetchNext}
-        hasMore={hasMore}
-        loader={loading && <p className="text-center my-4">Loading more...</p>}
-        endMessage={
-          !hasMore &&
-          !loading && (
-            <p className="text-center mt-4 text-gray-500">
-              You've reached the end.
-            </p>
-          )
-        }
-      >
-        {venues.map((venue) => (
-          <Link
-            key={venue.id}
-            to={`/venue/${venue.id}`}
-            className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition flex flex-col gap-1 min-w-0"
-          >
-            <h2 className="text-lg font-semibold mb-2">
-              {truncateText(venue.name, 20)}
-            </h2>
-            <img
-              src={venue?.media?.[0]?.url || "/No-Image-Placeholder.svg"}
-              alt={venue?.media?.[0]?.alt || "Venue image"}
-              className="w-full h-48 object-cover rounded-lg mb-2"
-            />
-            <p>
-              <strong> Max guests:</strong> {venue.maxGuests}
-            </p>
-            <p className="text-m text-blue-600">
-              {truncateText(venue.description, 20)}
-            </p>
-            <div className="flex justify-between">
-              <p className="text-green-700">
-                <strong className="text-black">Price:</strong> {venue.price}$
-              </p>
-              <p className="text-m flex items-center gap-1">
-                {venue.rating}
-                <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-              </p>
-            </div>
-            <div className="flex gap-2 mt-2 text-gray-700">
-              {venue.meta?.wifi ? (
-                <Wifi
-                  className="w-5 h-5 text-green-600"
-                  title="WiFi available"
-                />
-              ) : (
-                <WifiOff className="w-5 h-5 text-red-400" title="No WiFi" />
-              )}
-              {venue.meta?.parking ? (
-                <ParkingCircle
-                  className="w-5 h-5 text-green-600"
-                  title="Parking available"
-                />
-              ) : (
-                <ParkingCircleOff
-                  className="w-5 h-5 text-red-400"
-                  title="No Parking"
-                />
-              )}
-              {venue.meta?.breakfast ? (
-                <Utensils
-                  className="w-5 h-5 text-green-600"
-                  title="Breakfast included"
-                />
-              ) : (
-                <UtensilsCrossed
-                  className="w-5 h-5 text-red-400"
-                  title="No Breakfast"
-                />
-              )}
-              {venue.meta?.pets ? (
-                <Fish className="w-5 h-5 text-green-600" title="Pets allowed" />
-              ) : (
-                <FishOff className="w-5 h-5 text-red-400" title="No Pets" />
-              )}
-            </div>
-          </Link>
-        ))}
-        {!loading && (
-          <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2 flex flex-col items-center justify-center mt-4 text-gray-500 gap-4">
-            <p>You've reached the end.</p>
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-800 transition cursor-pointer"
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+              className="border p-2 rounded cursor-pointer"
             >
-              Back to Top
-            </button>
+              <option value="desc">Descending</option>
+              <option value="asc">Ascending</option>
+            </select>
+
+            {["wifi", "pets", "parking", "breakfast"].map((key) => (
+              <label
+                key={key}
+                className="flex items-center gap-2 border px-3 py-1 rounded shadow-sm cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  checked={filters[key]}
+                  onChange={(e) =>
+                    setFilters({ ...filters, [key]: e.target.checked })
+                  }
+                  className="w-5 h-5 cursor-pointer"
+                />
+
+                <span className="flex items-center gap-1">
+                  {featureIcons[key]}
+                  <span className="capitalize">{key}</span>
+                </span>
+              </label>
+            ))}
           </div>
-        )}
-      </InfiniteScroll>
-    </div>
+        </div>
+        <InfiniteScroll
+          className="p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+          dataLength={venues.length}
+          next={fetchNext}
+          hasMore={hasMore}
+          loader={
+            loading && <p className="text-center my-4">Loading more...</p>
+          }
+          endMessage={
+            !hasMore &&
+            !loading && (
+              <p className="text-center mt-4 text-gray-500">
+                You've reached the end.
+              </p>
+            )
+          }
+        >
+          {venues.map((venue) => (
+            <Link
+              key={venue.id}
+              to={`/venue/${venue.id}`}
+              aria-label="Go to specific venue"
+              className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition flex flex-col gap-1 min-w-0"
+            >
+              <h2 className="text-lg font-semibold mb-2">
+                {truncateText(venue.name, 20)}
+              </h2>
+              <img
+                src={venue?.media?.[0]?.url || "/No-Image-Placeholder.svg"}
+                alt={venue?.media?.[0]?.alt || "Venue image"}
+                className="w-full h-48 object-cover rounded-lg mb-2"
+              />
+              <p>
+                <strong> Max guests:</strong> {venue.maxGuests}
+              </p>
+              <p className="text-m text-blue-600">
+                {truncateText(venue.description, 20)}
+              </p>
+              <div className="flex justify-between">
+                <p className="text-green-700">
+                  <strong className="text-black">Price:</strong> {venue.price}$
+                </p>
+                <p className="text-m flex items-center gap-1">
+                  {venue.rating}
+                  <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                </p>
+              </div>
+              <div className="flex gap-2 mt-2 text-gray-700">
+                {venue.meta?.wifi ? (
+                  <Wifi
+                    className="w-5 h-5 text-green-600"
+                    title="WiFi available"
+                  />
+                ) : (
+                  <WifiOff className="w-5 h-5 text-red-400" title="No WiFi" />
+                )}
+                {venue.meta?.parking ? (
+                  <ParkingCircle
+                    className="w-5 h-5 text-green-600"
+                    title="Parking available"
+                  />
+                ) : (
+                  <ParkingCircleOff
+                    className="w-5 h-5 text-red-400"
+                    title="No Parking"
+                  />
+                )}
+                {venue.meta?.breakfast ? (
+                  <Utensils
+                    className="w-5 h-5 text-green-600"
+                    title="Breakfast included"
+                  />
+                ) : (
+                  <UtensilsCrossed
+                    className="w-5 h-5 text-red-400"
+                    title="No Breakfast"
+                  />
+                )}
+                {venue.meta?.pets ? (
+                  <Fish
+                    className="w-5 h-5 text-green-600"
+                    title="Pets allowed"
+                  />
+                ) : (
+                  <FishOff className="w-5 h-5 text-red-400" title="No Pets" />
+                )}
+              </div>
+            </Link>
+          ))}
+          {!loading && (
+            <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2 flex flex-col items-center justify-center mt-4 text-gray-500 gap-4">
+              <p>You've reached the end.</p>
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-800 transition cursor-pointer"
+              >
+                Back to Top
+              </button>
+            </div>
+          )}
+        </InfiniteScroll>
+      </div>
+    </>
   );
 }
 

@@ -181,12 +181,14 @@ function EditProfile() {
         <div className="flex gap-4">
           <button
             type="submit"
+            aria-label="Confirm profile changes"
             className="bg-blue-600 text-white px-4 py-2 rounded w-full cursor-pointer hover:bg-blue-800"
           >
             Save Changes
           </button>
           <button
             type="button"
+            aria-label="Discard profile changes"
             onClick={handleDiscard}
             className="bg-red-600 text-white px-4 py-2 rounded w-full cursor-pointer hover:bg-red-800"
           >

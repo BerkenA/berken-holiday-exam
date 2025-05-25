@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AuthToken from "../../components/Authtoken";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import truncateText from "../../components/TruncateText";
 import { toast } from "react-toastify";
 import FormateDate from "../../components/FormateDate";
@@ -11,10 +11,17 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 function Profile() {
   const user = AuthToken((state) => state.user);
   const token = AuthToken((state) => state.token);
+  const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
+    if (!user || !token) {
+      toast.info("You need to be logged in to see this page, redirected to login")
+      navigate("/login");
+      return;
+    }
+
     async function fetchProfile() {
       try {
         const response = await fetch(
@@ -62,7 +69,7 @@ function Profile() {
       fetchProfile();
       fetchUserBookings();
     }
-  }, [user, token]);
+  }, [user, token, navigate]);
 
   if (!profile) {
     return (
@@ -96,7 +103,7 @@ function Profile() {
         )}
         <div className="flex justify-center gap-4">
           <button className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer mt-4 hover:bg-blue-800">
-            <Link to="/edit-profile">Edit profile</Link>
+            <Link to="/edit-profile" aria-label="Go to edit profile">Edit profile</Link>
           </button>
           <button
             onClick={(e) => {
@@ -115,6 +122,7 @@ function Profile() {
           >
             <Link
               to="/CreateVenue"
+              aria-label="Go to create venue"
               onClick={(e) => !profile.venueManager && e.preventDefault()}
             >
               Create Venue
@@ -137,6 +145,7 @@ function Profile() {
                     to={`/venue/${venue.id}`}
                     key={venue.id}
                     className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition flex flex-col"
+                    aria-label="Your venue"
                   >
                     <h3 className="text-lg font-semibold mb-2">{venue.name}</h3>
                     <img
@@ -177,6 +186,7 @@ function Profile() {
                     to={`/venue/${booking.venue.id}`}
                     state={{ booking }}
                     key={booking.id}
+                    aria-label="Your bookings"
                     className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition flex flex-col"
                   >
                     <h3 className="text-lg font-semibold mb-2">

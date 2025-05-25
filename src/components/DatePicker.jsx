@@ -252,6 +252,7 @@ const confirmBooking = () => {
                 }
                 confirmBooking();
               }}
+              aria-label="Confirm booking"
               disabled={loading || guests < 1 || guests > maxGuests}
               className={`mt-4 px-4 py-2 rounded text-white ${
                 loading || guests < 1 || guests > maxGuests

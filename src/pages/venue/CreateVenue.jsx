@@ -314,6 +314,7 @@ function CreateVenue() {
         <div className="flex gap-4">
           <button
             type="submit"
+            aria-label="Confirm your creation of this venue"
             disabled={loading}
             className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700 cursor-pointer"
           >
@@ -321,6 +322,7 @@ function CreateVenue() {
           </button>
           <button
             type="button"
+            aria-label="Discard this venue creation"
             onClick={handleDiscard}
             className="bg-red-600 text-white px-4 py-2 rounded w-full hover:bg-red-700 cursor-pointer"
           >

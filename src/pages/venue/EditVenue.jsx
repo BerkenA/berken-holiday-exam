@@ -266,12 +266,14 @@ function EditVenue() {
           <button
             type="submit"
             disabled={loading}
+            aria-label="Confirm your edit"
             className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700 cursor-pointer"
           >
             {loading ? "Saving..." : "Save Changes"}
           </button>
           <button
             type="button"
+            aria-label="Discard your edit"
             onClick={handleDiscard}
             className="bg-red-600 text-white px-4 py-2 rounded w-full hover:bg-red-700 cursor-pointer"
           >

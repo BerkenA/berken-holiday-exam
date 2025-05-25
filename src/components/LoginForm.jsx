@@ -83,6 +83,7 @@ function LoginForm() {
       <button
         type="submit"
         className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:cursor-pointer"
+        aria-label="Login"
       >
         Login
       </button>
@@ -90,7 +91,7 @@ function LoginForm() {
       <div className="flex justify-center">
         <p>
           Dont have an account?{" "}
-          <Link to="/register" className="text-blue-600 hover:underline">
+          <Link to="/register" className="text-blue-600 hover:underline" aria-label="Go to register">
             Register here
           </Link>
         </p>

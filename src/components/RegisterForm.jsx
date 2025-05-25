@@ -154,6 +154,7 @@ function RegisterForm() {
 
       <button
         type="submit"
+        aria-label="Confirm registration"
         className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:cursor-pointer"
       >
         Register
@@ -162,7 +163,7 @@ function RegisterForm() {
       <div className="flex justify-center">
         <p>
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-600 hover:underline">
+          <Link to="/login" className="text-blue-600 hover:underline" aria-label="Go to login">
             Login here
           </Link>
         </p>

@@ -44,7 +44,7 @@ function Navbar() {
     <header className="sticky top-0 z-50 bg-white shadow-xl">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex-1 flex items-center">
-          <Link to="/" className="text-2xl font-bold text-blue-600">
+          <Link to="/" className="text-2xl font-bold text-blue-600" aria-label="Go to home">
             Holidaze
           </Link>
         </div>
@@ -57,22 +57,23 @@ function Navbar() {
 
         {/* Desktop Menu */}
         <nav className="flex-1 justify-end space-x-6 items-center hidden sm:flex">
-          <Link to="/" className="hover:text-blue-600 text-lg">
+          <Link to="/" className="hover:text-blue-600 text-lg ml-6" aria-label="Go to home"> 
             Home
           </Link>
           {token && (
-            <Link to="/profile" className="hover:text-blue-600 text-lg">
+            <Link to="/profile" className="hover:text-blue-600 text-lg" aria-label="Go to profile">
               Profile
             </Link>
           )}
           {!token ? (
-            <Link to="/login" className="hover:text-blue-600 text-lg">
+            <Link to="/login" className="hover:text-blue-600 text-lg" aria-label="Go to login">
               Login
             </Link>
           ) : (
             <button
               onClick={handleLogout}
               className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer text-lg"
+              aria-label="Logout"
             >
               Logout
             </button>
@@ -106,6 +107,7 @@ function Navbar() {
               to="/"
               className="block hover:text-blue-600"
               onClick={() => setMenuOpen(false)}
+              aria-label="Go to home"
             >
               Home
             </Link>
@@ -114,6 +116,7 @@ function Navbar() {
                 to="/profile"
                 className="block hover:text-blue-600"
                 onClick={() => setMenuOpen(false)}
+                aria-label="Go to profile"
               >
                 Profile
               </Link>
@@ -123,6 +126,7 @@ function Navbar() {
                 to="/login"
                 onClick={() => setMenuOpen(false)}
                 className="block hover:text-blue-600"
+                aria-label="Go to login"
               >
                 Login
               </Link>
@@ -133,6 +137,7 @@ function Navbar() {
                   handleLogout();
                 }}
                 className="block text-left w-full hover:text-blue-600"
+                aria-label="Logout"
               >
                 Logout
               </button>
