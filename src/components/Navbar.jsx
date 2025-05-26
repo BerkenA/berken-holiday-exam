@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import AuthToken from "./Authtoken";
+import AuthToken from "./AuthToken";
 import { toast } from "react-toastify";
 import SearchBar from "./SearchBar";
 

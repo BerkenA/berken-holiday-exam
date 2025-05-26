@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import AuthToken from "./Authtoken";
+import AuthToken from "./AuthToken";
 import { toast } from "react-toastify";
 
 const BASE_URL = import.meta.env.VITE_API_URL;

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import "react-toastify/dist/ReactToastify.css";
-import AuthToken from "./Authtoken";
+import AuthToken from "./AuthToken";
 import { confirmAlert } from "react-confirm-alert";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
