@@ -344,20 +344,20 @@ function Venue() {
                       className="mb-4 border-gray-200 p-4 rounded-2xl shadow-xl flex items-center justify-between"
                     >
                       <div className="flex flex-col gap-1">
-                        <p>
-                          <strong>Booked by:</strong>{" "}
+                        <p className="text-black">
+                          <strong className="text-blue-600">Booked by:</strong>{" "}
                           {booking.customer?.name || "Unknown"}
                         </p>
-                        <p>
-                          <strong>Date from:</strong>{" "}
+                        <p className="text-black">
+                          <strong className="text-blue-600">Date from:</strong>{" "}
                           <FormateDate date={booking.dateFrom} />
                         </p>
-                        <p>
-                          <strong>Date to:</strong>{" "}
+                        <p className="text-black">
+                          <strong className="text-blue-600">Date to:</strong>{" "}
                           <FormateDate date={booking.dateTo} />
                         </p>
-                        <p>
-                          <strong>Guests:</strong> {booking.guests}
+                        <p className="text-black">
+                          <strong className="text-blue-600">Guests:</strong> {booking.guests}
                         </p>
                       </div>
                       <img
