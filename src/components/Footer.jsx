@@ -9,15 +9,15 @@ function Footer() {
           &copy; {new Date().getFullYear()} All rights reserved.
         </p>
         <div className="flex gap-4">
-          <Link to="/about" className="text-blue-600 hover:text-blue-800 hover:underline text-xl" aria-label="Go to about page">
+          <p className="text-blue-600 hover:text-blue-800 hover:underline text-xl" aria-label="Go to about page">
             About
-          </Link>
-          <Link to="/contact" className="text-blue-600 hover:text-blue-800 hover:underline text-xl" aria-label="Go to contact page">
+          </p>
+          <p className="text-blue-600 hover:text-blue-800 hover:underline text-xl" aria-label="Go to contact page">
             Contact
-          </Link>
-          <Link to="/privacy" className="text-blue-600 hover:text-blue-800 hover:underline text-xl" aria-label="Go to privacy page">
+          </p>
+          <p className="text-blue-600 hover:text-blue-800 hover:underline text-xl" aria-label="Go to privacy page">
             Privacy
-          </Link>
+          </p>
         </div>
       </div>
     </footer>
