@@ -19,7 +19,7 @@ function Profile() {
   useEffect(() => {
     if (!user || !token) {
       toast.info(
-        "You need to be logged in to see this page, redirected to login"
+        "Logged out"
       );
       navigate("/login");
       return;
