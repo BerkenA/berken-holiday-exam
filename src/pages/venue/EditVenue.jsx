@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import AuthToken from "../../components/Authtoken";
+import AuthToken from "../../components/AuthToken";
 import { toast } from "react-toastify";
 import HandleDiscard from "../../components/handleDiscard";
 import { Helmet } from "react-helmet-async";

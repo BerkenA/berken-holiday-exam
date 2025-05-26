@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import AuthToken from "../../components/Authtoken";
+import AuthToken from "../../components/AuthToken";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
 import DatePicker from "../../components/DatePicker";

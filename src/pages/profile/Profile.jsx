@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AuthToken from "../../components/Authtoken";
+import AuthToken from "../../components/AuthToken";
 import { Link, useNavigate } from "react-router-dom";
 import truncateText from "../../components/TruncateText";
 import { toast } from "react-toastify";
