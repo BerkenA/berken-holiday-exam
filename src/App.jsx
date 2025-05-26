@@ -30,7 +30,7 @@ const App = () => {
         draggable
         pauseOnHover
         theme="light"
-        style={{ top: "85px" }}
+        style={{ top: "110px" }}
       />
     </div>
   );

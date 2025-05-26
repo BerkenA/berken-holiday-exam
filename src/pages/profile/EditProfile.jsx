@@ -89,7 +89,7 @@ function EditProfile() {
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
           style={{
-            backgroundImage: `url('/public/register-background.jpg')`,
+            backgroundImage: `url('/register-background.jpg')`,
           }}
         ></div>
 

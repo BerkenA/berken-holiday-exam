@@ -113,61 +113,99 @@ function DatePicker({ maxGuests, bookingToEdit = null, price }) {
     const totalCost = nights * price;
 
     confirmAlert({
-      title: "Confirm Booking",
-      message: (
-        <div
-          style={{
-            lineHeight: "1.6",
-            fontSize: "16px",
-            color: "#1E88E5",
-            borderRadius: "8px",
-            marginTop: "16px",
-          }}
-        >
-          {bookingToEdit && (
-            <p className="mb-2 font-semibold text-red-600">
-              Editing your booking will overwrite your previous booking details.
-            </p>
-          )}
-          <strong
+      customUI: ({ onClose }) => {
+        return (
+          <div
             style={{
-              color: "#000000",
+              background: "#fff",
+              padding: "30px",
+              borderRadius: "8px",
+              width: "50%",
+              maxWidth: "500px",
+              minWidth: "300px",
+              lineHeight: "1.6",
+              fontSize: "16px",
+              color: "#000",
+              border: "1px solid black",
+              boxSizing: "border-box",
             }}
           >
-            Booking details:
-          </strong>
-          <br />
-          From: {formatDate(startDate)}
-          <br />
-          To: {formatDate(endDate)}
-          <br />
-          Nights: {nights}
-          <br />
-          Guests: {guests}
-          <br />
-          Max allowed: {maxGuests}
-          <br />
-          Price per night: ${price}
-          <br />
-          <br />
-          <strong
-            style={{
-              color: "#43A047",
-            }}
-          >
-            Total cost: ${totalCost}
-          </strong>
-        </div>
-      ),
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => handleBooking(),
-        },
-        {
-          label: "No",
-        },
-      ],
+            <h1
+              style={{
+                fontSize: "20px",
+                fontWeight: "bold",
+                marginBottom: "16px",
+                color: "#1E88E5",
+              }}
+            >
+              Confirm Booking
+            </h1>
+            {bookingToEdit && (
+              <p className="mb-2 font-semibold text-red-600">
+                Editing your booking will overwrite your previous booking
+                details.
+              </p>
+            )}
+            <strong style={{ color: "#000000" }}>Booking details:</strong>
+            <br />
+            From: {formatDate(startDate)}
+            <br />
+            To: {formatDate(endDate)}
+            <br />
+            Nights: {nights}
+            <br />
+            Guests: {guests}
+            <br />
+            Max allowed: {maxGuests}
+            <br />
+            Price per night: ${price}
+            <br />
+            <br />
+            <strong style={{ color: "#43A047" }}>
+              Total cost: ${totalCost}
+            </strong>
+            <div
+              style={{
+                marginTop: "24px",
+                display: "flex",
+                gap: "12px",
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
+            >
+              <button
+                onClick={() => {
+                  handleBooking();
+                  onClose();
+                }}
+                style={{
+                  padding: "10px 20px",
+                  backgroundColor: "#1E88E5",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Yes
+              </button>
+              <button
+                onClick={onClose}
+                style={{
+                  padding: "10px 20px",
+                  backgroundColor: "#E53935",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                No
+              </button>
+            </div>
+          </div>
+        );
+      },
     });
   };
 
@@ -190,8 +228,8 @@ function DatePicker({ maxGuests, bookingToEdit = null, price }) {
       return;
     }
 
-    const dateFrom = formatDate(state[0].startDate);
-    const dateTo = formatDate(state[0].endDate);
+    const dateFrom = state[0].startDate.toISOString().split("T")[0];
+    const dateTo = state[0].endDate.toISOString().split("T")[0];
 
     setLoading(true);
     const loadingToast = toast.loading(
@@ -253,7 +291,7 @@ function DatePicker({ maxGuests, bookingToEdit = null, price }) {
   return (
     <>
       {!isVenueOwner && (
-        <div className="max-w-fit  rounded-lg shadow">
+        <div className="max-w-full rounded-lg shadow overflow-hidden">
           <DateRange
             onChange={handleDateChange}
             ranges={state}
@@ -262,7 +300,7 @@ function DatePicker({ maxGuests, bookingToEdit = null, price }) {
           />
 
           <div className="mt-4 flex flex-col">
-            <label className="block mb-2 text-sm font-medium">
+            <label className="block mb-2 text-sm font-medium pl-4">
               Number of guests
             </label>
             <input
@@ -270,7 +308,7 @@ function DatePicker({ maxGuests, bookingToEdit = null, price }) {
               min={1}
               value={guests}
               onChange={onGuestsChange}
-              className="border rounded px-2 py-1 w-20"
+              className="border rounded px-2 py-1 w-20 ml-4"
             />
             <button
               onClick={() => {

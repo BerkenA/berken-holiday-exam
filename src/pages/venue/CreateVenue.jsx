@@ -169,7 +169,7 @@ function CreateVenue() {
             Create a New Venue
           </h1>
 
-          <label className="block">
+          <label className="block ">
             Name <span className="text-red-600">*</span>
             <input
               type="text"

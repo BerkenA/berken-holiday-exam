@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import AuthToken from "./Authtoken";
+import { toast } from "react-toastify";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const DEFAULT_AVATAR_URL =
@@ -43,7 +44,6 @@ function RegisterForm() {
     },
   });
 
-  const [message, setMessage] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
   const login = AuthToken((state) => state.login);
@@ -56,7 +56,7 @@ function RegisterForm() {
     }
 
     if (formData.password !== confirmPassword) {
-      setMessage("Passwords doesn't match");
+      toast.error("Passwords doesn't match");
       return;
     }
 
@@ -87,11 +87,11 @@ function RegisterForm() {
         throw new Error(loginData.errors?.[0]?.message || "Something went wrong, try again");
       }
 
-      setMessage("User registered successfully!");
+      toast.success("User registered successfully!");
       login(loginData.data, loginData.data.accessToken);
       navigate("/profile");
     } catch (error) {
-      setMessage(error.message);
+      toast.error(error.message);
     }
   }
 
@@ -168,8 +168,6 @@ function RegisterForm() {
           </Link>
         </p>
       </div>
-
-      {message && <p className="text-red-500">{message}</p>}
     </form>
   );
 }

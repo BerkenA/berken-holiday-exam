@@ -98,10 +98,10 @@ function Profile() {
       </Helmet>
 
       <div className="min-h-screen flex justify-center p-6 flex-wrap">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full text-center">
+        <div className="bg-white rounded-2xl p-8 w-full text-center">
           {profile.avatar?.url ? (
             <img
-              src={profile.avatar.url}
+              src={profile.avatar.url}  
               alt={profile.avatar.alt || "User avatar"}
               className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
             />
@@ -156,7 +156,7 @@ function Profile() {
                 !profile.venues?.length ? "text-center" : "text-left"
               }`}
             >
-              <h2 className="text-xl font-semibold mb-6 text-center">
+              <h2 className="text-xl font-semibold mb-6 text-center ">
                 Your Venues
               </h2>
               <div className="flex flex-col gap-4">
@@ -168,7 +168,7 @@ function Profile() {
                       className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition flex flex-col"
                       aria-label="Your venue"
                     >
-                      <h3 className="text-lg font-semibold mb-2">
+                      <h3 className="text-lg font-semibold mb-2 text-blue-600">
                         {venue.name}
                       </h3>
                       <img
@@ -183,7 +183,7 @@ function Profile() {
                         <strong>Guests</strong> {venue.maxGuests}
                       </p>
                       <p className="text-sm text-gray-600 truncate">
-                        {venue.description}
+                        {truncateText(venue.description, 30)}
                       </p>
                       <p className="text-xl mt-2 text-green-600">
                         <strong className="text-black">Price:</strong> {venue.price}$
@@ -192,7 +192,7 @@ function Profile() {
                   ))
                 ) : (
                   <p>You have no venues.</p>
-                )}
+                )}  
               </div>
             </div>
 
@@ -201,7 +201,7 @@ function Profile() {
                 bookings.length === 0 ? "text-center" : "text-left"
               }`}
             >
-              <h2 className="text-xl font-semibold mb-6 text-center">
+              <h2 className="text-xl font-semibold mb-6 text-center ">
                 Your Bookings
               </h2>
               <div className="flex flex-col gap-4">
@@ -214,7 +214,7 @@ function Profile() {
                       aria-label="Your bookings"
                       className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition flex flex-col"
                     >
-                      <h3 className="text-lg font-semibold mb-2">
+                      <h3 className="text-lg font-semibold mb-2 text-blue-600">
                         {truncateText(booking.venue.name, 15)}
                       </h3>
                       <img

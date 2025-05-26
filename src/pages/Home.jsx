@@ -16,7 +16,6 @@ import {
   Star,
 } from "lucide-react";
 
-
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 function Home() {
@@ -126,8 +125,10 @@ function Home() {
       </Helmet>
 
       <div>
-        <div className="p-4 bg-white shadow rounded mb-6 sticky top-16">
-          <h3 className="font-bold text-xl mb-2 text-blue-600">Filter Venues</h3>
+        <div className="p-4 bg-white shadow rounded mb-6 sm:sticky sm:top-16">
+          <h3 className="font-bold text-xl mb-2 text-blue-600">
+            Filter Venues
+          </h3>
 
           <div className="flex flex-wrap gap-4">
             <select
@@ -195,7 +196,7 @@ function Home() {
               aria-label="Go to specific venue"
               className="bg-white shadow-xl rounded-xl p-4 border border-gray-200 hover:shadow-2xl transition flex flex-col gap-1 min-w-0"
             >
-              <h2 className="text-lg font-semibold mb-2">
+              <h2 className="text-lg font-semibold mb-2 text-blue-600">
                 {truncateText(venue.name, 20)}
               </h2>
               <img
@@ -212,7 +213,8 @@ function Home() {
               </p>
               <div className="flex justify-between">
                 <p className="text-green-700">
-                  <strong className="text-black">Price pr night:</strong> {venue.price}$
+                  <strong className="text-black">Price pr night:</strong>{" "}
+                  {venue.price}$
                 </p>
                 <p className="text-m flex items-center gap-1">
                   {venue.rating}
