@@ -231,27 +231,36 @@ function Venue() {
           </ul>
         </div>
 
-        <DatePicker
-          maxGuests={venue.maxGuests}
-          editingBooking={editBooking}
-          price={venue.price}
-          onBookingUpdated={(updatedBooking) => {
-            setBookings((prev) =>
-              prev.map((b) => (b.id === updatedBooking.id ? updatedBooking : b))
-            );
-            setEditBooking(null);
-          }}
-          onCancelEdit={() => setEditBooking(null)}
-        />
+        <div className="">
+          <DatePicker
+            maxGuests={venue.maxGuests}
+            editingBooking={editBooking}
+            price={venue.price}
+            onBookingUpdated={(updatedBooking) => {
+              setBookings((prev) =>
+                prev.map((b) =>
+                  b.id === updatedBooking.id ? updatedBooking : b
+                )
+              );
+              setEditBooking(null);
+            }}
+            onCancelEdit={() => setEditBooking(null)}
+          />
 
-        {venue.owner && (
-          <div className="mb-4">
-            <h2 className="text-xl font-semibold">Hosted by</h2>
-            <p>
-              {venue.owner.name} ({venue.owner.email})
-            </p>
-          </div>
-        )}
+          {venue.owner && (
+            <div className="mb-4 flex flex-col">
+              <h2 className="text-xl font-semibold">Hosted by</h2>
+              <img
+                src={venue.owner.avatar?.url || "/default-avatar.jpg"}
+                alt={venue.owner.avatar?.alt || "User avatar"}
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <p>
+                {venue.owner.name} ({venue.owner.email})
+              </p>
+            </div>
+          )}
+        </div>
 
         {booking && (
           <div className="booking-info p-4 bg-blue-100 border border-blue-400 rounded mt-4">
@@ -321,6 +330,7 @@ function Venue() {
         {editBooking && booking && editBooking.id === booking.id && (
           <DatePicker
             maxGuests={venue.maxGuests}
+            price={venue.price}
             bookingToEdit={editBooking}
             onBookingUpdated={(updatedBooking) => {
               setBookings((prev) =>

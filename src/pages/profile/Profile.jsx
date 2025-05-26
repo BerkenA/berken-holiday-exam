@@ -236,9 +236,6 @@ function Profile() {
                       <p>
                         <strong>Guests:</strong> {booking.guests}
                       </p>
-                      <p className="text-sm text-blue-600 truncate mt-2">
-                        {truncateText(booking.venue.description, 55)}
-                      </p>
                       <p className="text-xl mt-2">
                         <strong>Price:</strong> {booking.venue.price}$
                       </p>

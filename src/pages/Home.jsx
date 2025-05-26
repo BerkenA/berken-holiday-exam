@@ -209,9 +209,6 @@ function Home() {
               <p>
                 <strong> Max guests:</strong> {venue.maxGuests}
               </p>
-              <p className="text-m text-blue-600">
-                {truncateText(venue.description, 20)}
-              </p>
               <div className="flex justify-between">
                 <p className="text-green-700">
                   <strong className="text-black">Price:</strong> {venue.price}$

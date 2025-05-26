@@ -30,11 +30,11 @@ function DatePicker({ maxGuests, bookingToEdit = null, price }) {
   const [loading, setLoading] = useState(false);
 
   const formatDate = (date) => {
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0"); 
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-};
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -60,6 +60,10 @@ function DatePicker({ maxGuests, bookingToEdit = null, price }) {
 
         const datesToDisable = [];
         bookings.forEach((booking) => {
+          if (bookingToEdit && booking.id === bookingToEdit.id) {
+            return;
+          }
+
           const current = new Date(booking.dateFrom);
           const end = new Date(booking.dateTo);
           while (current <= end) {
@@ -77,7 +81,7 @@ function DatePicker({ maxGuests, bookingToEdit = null, price }) {
     };
 
     fetchBookings();
-  }, [venueId, user?.name, token]);
+  }, [venueId, user?.name, token, bookingToEdit]);
 
   const handleDateChange = (item) => {
     setState([item.selection]);
@@ -100,48 +104,72 @@ function DatePicker({ maxGuests, bookingToEdit = null, price }) {
     setGuests(val);
   };
 
-const confirmBooking = () => {
-  const startDate = state[0].startDate;
-  const endDate = state[0].endDate;
+  const confirmBooking = () => {
+    const startDate = state[0].startDate;
+    const endDate = state[0].endDate;
 
-  const timeDiff = endDate.getTime() - startDate.getTime();
-  const nights = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24) +1));
-  const totalCost = nights * price;
+    const timeDiff = endDate.getTime() - startDate.getTime();
+    const nights = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24) + 1));
+    const totalCost = nights * price;
 
-  confirmAlert({
-    title: "Confirm Booking",
-    message: (
-      <div style={{ lineHeight: "1.6" }}>
-        <strong>Booking details:</strong>
-        <br />
-        From: {formatDate(startDate)}
-        <br />
-        To: {formatDate(endDate)}
-        <br />
-        Nights: {nights}
-        <br />
-        Guests: {guests}
-        <br />
-        Max allowed: {maxGuests}
-        <br />
-        Price per night: ${price}
-        <br />
-        <br />
-        <strong>Total cost: ${totalCost}</strong>
-      </div>
-    ),
-    buttons: [
-      {
-        label: "Yes",
-        onClick: () => handleBooking(),
-      },
-      {
-        label: "No",
-      },
-    ],
-  });
-};
-
+    confirmAlert({
+      title: "Confirm Booking",
+      message: (
+        <div
+          style={{
+            lineHeight: "1.6",
+            fontSize: "16px",
+            color: "#1E88E5",
+            borderRadius: "8px",
+            marginTop: "16px",
+          }}
+        >
+          {bookingToEdit && (
+            <p className="mb-2 font-semibold text-red-600">
+              Editing your booking will overwrite your previous booking details.
+            </p>
+          )}
+          <strong
+            style={{
+              color: "#000000",
+            }}
+          >
+            Booking details:
+          </strong>
+          <br />
+          From: {formatDate(startDate)}
+          <br />
+          To: {formatDate(endDate)}
+          <br />
+          Nights: {nights}
+          <br />
+          Guests: {guests}
+          <br />
+          Max allowed: {maxGuests}
+          <br />
+          Price per night: ${price}
+          <br />
+          <br />
+          <strong
+            style={{
+              color: "#43A047",
+            }}
+          >
+            Total cost: ${totalCost}
+          </strong>
+        </div>
+      ),
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => handleBooking(),
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
+  };
 
   useEffect(() => {
     if (bookingToEdit) {
