@@ -1,21 +1,21 @@
 import { Link } from "react-router-dom";
 
-export default function Footer() {
+function Footer() {
   return (
     <footer className="text-gray-700 py-6 mt-10">
       <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-blue-600 text-2xl font-bold">Holidaze</p>
-        <p className="text-m">
+        <p className="text-xl">
           &copy; {new Date().getFullYear()} All rights reserved.
         </p>
         <div className="flex gap-4">
-          <Link to="/about" className="hover:text-blue-600">
+          <Link to="/about" className="hover:text-blue-600 text-xl" aria-label="Go to about page">
             About
           </Link>
-          <Link to="/contact" className="hover:text-blue-600">
+          <Link to="/contact" className="hover:text-blue-600 text-xl" aria-label="Go to contact page">
             Contact
           </Link>
-          <Link to="/privacy" className="hover:text-blue-600">
+          <Link to="/privacy" className="hover:text-blue-600 text-xl" aria-label="Go to privacy page">
             Privacy
           </Link>
         </div>
@@ -23,3 +23,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+export default Footer;

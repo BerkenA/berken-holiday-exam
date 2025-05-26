@@ -1,1 +1,64 @@
 @import "tailwindcss";
+
+body {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+nav {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+footer {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',  sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.react-confirm-alert {
+  width: 300px;
+  background-color: #1e40af !important;
+  max-width: 40vw !important;
+  border-radius: 12px !important;
+  color: white !important;
+  font-family: 'Arial', sans-serif;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.react-confirm-alert-button-group {
+  margin-top: 20px;
+}
+
+.react-confirm-alert-button-group button {
+  background-color: #2563eb !important;
+  border: none !important;
+  color: white !important;
+  padding: 10px 20px !important;
+  border-radius: 8px !important;
+  font-weight: 600;
+  font-size: 16px !important;
+  cursor: pointer;
+  margin: 0 px;
+  transition: background-color 0.3s ease;
+  width: 150px;
+  cursor: pointer;
+}
+
+.react-confirm-alert-button-group button:hover {
+  background-color: #1d4ed8 !important;
+}
+
+
+.react-confirm-alert-button-group button:nth-child(2) {
+  background-color: #ef4444 !important;
+}
+
+.react-confirm-alert-button-group button:nth-child(2):hover {
+  background-color: #b91c1c !important;
+}

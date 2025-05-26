@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import AuthToken from "./Authtoken";
+import { toast } from "react-toastify";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -35,7 +36,6 @@ function LoginForm() {
     password: "",
   });
 
-  const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const login = AuthToken((state) => state.login);
 
@@ -43,7 +43,7 @@ function LoginForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${BASE_URL}/auth/login`, {
+      const response = await fetch(`${BASE_URL}/auth/login?_holidaze=true`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -55,11 +55,11 @@ function LoginForm() {
         throw new Error(data.errors?.[0]?.message || "Login failed");
       }
 
-      setMessage("Login successful!");
-      login(data.data, data.data.accessToken);
+      toast.success("Login successful!");
+      login(data.data, data.data.accessToken, data.venueManager);
       navigate("/profile");
     } catch (error) {
-      setMessage(error.message);
+      toast.error(error.message);
     }
   }
 
@@ -82,21 +82,20 @@ function LoginForm() {
 
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+        className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:cursor-pointer"
+        aria-label="Login"
       >
         Login
       </button>
 
       <div className="flex justify-center">
         <p>
-          Already have an account?{" "}
-          <Link to="/register" className="text-blue-600 hover:underline">
+          Dont have an account?{" "}
+          <Link to="/register" className="text-blue-600 hover:underline" aria-label="Go to register">
             Register here
           </Link>
         </p>
       </div>
-
-      {message && <p className="text-red-500">{message}</p>}
     </form>
   );
 }
