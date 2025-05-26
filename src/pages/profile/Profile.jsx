@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import truncateText from "../../components/TruncateText";
 import { toast } from "react-toastify";
 import FormateDate from "../../components/FormateDate";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -185,8 +185,8 @@ function Profile() {
                       <p className="text-sm text-gray-600 truncate">
                         {venue.description}
                       </p>
-                      <p className="text-xl mt-2">
-                        <strong>Price:</strong> {venue.price}$
+                      <p className="text-xl mt-2 text-green-600">
+                        <strong className="text-black">Price:</strong> {venue.price}$
                       </p>
                     </Link>
                   ))
@@ -236,8 +236,8 @@ function Profile() {
                       <p>
                         <strong>Guests:</strong> {booking.guests}
                       </p>
-                      <p className="text-xl mt-2">
-                        <strong>Price:</strong> {booking.venue.price}$
+                      <p className="text-xl mt-2 text-green-600">
+                        <strong className="text-black">Price:</strong> {booking.venue.price}$
                       </p>
                     </Link>
                   ))

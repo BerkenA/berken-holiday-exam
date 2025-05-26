@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import truncateText from "../components/TruncateText";
 import { toast } from "react-toastify";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
   Wifi,
@@ -15,6 +15,7 @@ import {
   FishOff,
   Star,
 } from "lucide-react";
+
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -125,8 +126,8 @@ function Home() {
       </Helmet>
 
       <div>
-        <div className="p-4 bg-white shadow rounded mb-6">
-          <h3 className="font-bold mb-2 text-blue-600">Filter Venues</h3>
+        <div className="p-4 bg-white shadow rounded mb-6 sticky top-16">
+          <h3 className="font-bold text-xl mb-2 text-blue-600">Filter Venues</h3>
 
           <div className="flex flex-wrap gap-4">
             <select
@@ -211,7 +212,7 @@ function Home() {
               </p>
               <div className="flex justify-between">
                 <p className="text-green-700">
-                  <strong className="text-black">Price:</strong> {venue.price}$
+                  <strong className="text-black">Price pr night:</strong> {venue.price}$
                 </p>
                 <p className="text-m flex items-center gap-1">
                   {venue.rating}

@@ -1,5 +1,5 @@
 import RegisterForm from "../../components/RegisterForm";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 function RegisterCustomer() {
   return (

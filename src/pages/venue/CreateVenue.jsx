@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AuthToken from "../../components/Authtoken";
 import { toast } from "react-toastify";
 import HandleDiscard from "../../components/handleDiscard";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -156,10 +156,14 @@ function CreateVenue() {
         />
         <meta name="author" content="Berken Ates" />
       </Helmet>
-      <div className="min-h-screen flex justify-center p-6 bg-gray-50">
+
+      <div
+        className="min-h-screen bg-cover bg-center bg-no-repeat flex justify-center items-center p-6"
+        style={{ backgroundImage: "url('/register-background.jpg')" }}
+      >
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl shadow-2xl p-8 w-full space-y-6 max-w-6xl"
+          className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 w-full space-y-6 max-w-3xl"
         >
           <h1 className="text-2xl font-bold text-blue-600 text-center">
             Create a New Venue

@@ -6,7 +6,15 @@ import { toast } from "react-toastify";
 import DatePicker from "../../components/DatePicker";
 import FormateDate from "../../components/FormateDate";
 import { Star } from "lucide-react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
+import { Wifi, ParkingCircle, Utensils, Fish } from "lucide-react";
+
+const amenityIcons = {
+  wifi: Wifi,
+  parking: ParkingCircle,
+  breakfast: Utensils,
+  pets: Fish,
+};
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -104,6 +112,7 @@ function Venue() {
         {
           method: "DELETE",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
             "X-Noroff-API-Key": API_KEY,
           },
@@ -221,13 +230,17 @@ function Venue() {
 
         <div className="mb-4">
           <h2 className="text-xl font-semibold">Amenities</h2>
-          <ul className="list-disc list-inside">
-            {Object.entries(venue.meta).map(([key, value]) => (
-              <li key={key}>
-                {key.charAt(0).toUpperCase() + key.slice(1)}:{" "}
-                {value ? "Yes" : "No"}
-              </li>
-            ))}
+          <ul className="space-y-2 mt-2">
+            {Object.entries(venue.meta).map(([key, value]) => {
+              if (!value) return null;
+              const Icon = amenityIcons[key];
+              return (
+                <li key={key} className="flex items-center gap-2 text-gray-700">
+                  {Icon && <Icon size={20} className="text-gray-600" />}
+                  <span className="capitalize">{key}</span>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
@@ -283,23 +296,30 @@ function Venue() {
               {venue.bookings.map((booking) => (
                 <li
                   key={booking.id}
-                  className="mb-4 border-gray-200 p-4 rounded-2xl shadow-xl"
+                  className="mb-4 border-gray-200 p-4 rounded-2xl shadow-xl flex items-center justify-between"
                 >
-                  <p>
-                    <strong>Booked by:</strong>{" "}
-                    {booking.customer?.name || "Unknown"}
-                  </p>
-                  <p>
-                    <strong>Date from:</strong>{" "}
-                    <FormateDate date={booking.dateFrom} />
-                  </p>
-                  <p>
-                    <strong>Date to:</strong>{" "}
-                    <FormateDate date={booking.dateTo} />
-                  </p>
-                  <p>
-                    <strong>Guests:</strong> {booking.guests}
-                  </p>
+                  <div className="flex flex-col gap-1">
+                    <p>
+                      <strong>Booked by:</strong>{" "}
+                      {booking.customer?.name || "Unknown"}
+                    </p>
+                    <p>
+                      <strong>Date from:</strong>{" "}
+                      <FormateDate date={booking.dateFrom} />
+                    </p>
+                    <p>
+                      <strong>Date to:</strong>{" "}
+                      <FormateDate date={booking.dateTo} />
+                    </p>
+                    <p>
+                      <strong>Guests:</strong> {booking.guests}
+                    </p>
+                  </div>
+                  <img
+                    src={booking.customer.avatar?.url}
+                    alt={booking.customer.avatar?.alt || "User avatar"}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
                 </li>
               ))}
             </ul>
